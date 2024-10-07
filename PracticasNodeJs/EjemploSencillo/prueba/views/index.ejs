@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agenda de Contactos</title>
+</head>
+<body>
+    <h1>Agenda de Contactos</h1>
+
+    <!-- Formulario para agregar un contacto -->
+    <form action="/add" method="POST">
+        <input type="text" name="firstName" placeholder="Nombre" required>
+        <input type="text" name="lastName" placeholder="Apellido" required>
+        <button type="submit">Agregar Contacto</button>
+    </form>
+
+    <!-- Lista de contactos -->
+    <ul>
+        <% contacts.forEach(contact => { %>
+            <li>
+                <form action="/edit/<%= contact.id %>" method="POST" style="display:inline;">
+                    <input type="text" name="firstName" value="<%= contact.firstName %>" required>
+                    <input type="text" name="lastName" value="<%= contact.lastName %>" required>
+                    <button type="submit">Modificar</button>
+                </form>
+                <form action="/delete/<%= contact.id %>" method="POST" style="display:inline;">
+                    <button type="submit">Eliminar</button>
+                </form>
+            </li>
+        <% }); %>
+    </ul>
+</body>
+</html>

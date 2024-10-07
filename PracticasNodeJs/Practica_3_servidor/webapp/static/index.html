@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <!-- <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                document.getElementById("btn").addEventListener("click", sendReq);
+            });
+
+            sendReq = async() => {
+                let payload = "";
+                for(let i  = 0; i < 10_000; i++)
+                    payload += `Payload Message: ${i}\n`;
+
+                const response = await fetch("/read", {
+                    method: "POST", body: payload
+                });
+
+                document.getElementById("msg").textContent = response.statusText;
+
+                document.getElementById("body").textContent = await response.text();
+            }
+
+
+        </script> v1--> 
+
+        <!-- <script>
+            document.addEventListener('DOMContentLoaded', function(){
+                document.getElementById("btn").addEventListener("click", sendReq);
+            })
+
+            sendReq = async() => {
+                let payload = [];
+                for(let i = 0; i < 5; i++){
+                    payload.push({
+                        id : i,
+                        message: `Payload Message: ${i}\n`
+                    });
+                }
+
+                const response = await fetch("/read", {
+                    method: "POST",
+                    body: JSON.stringify(payload),
+                    headers: {
+                        "Content-Type": "application/json"
+                    }
+                });
+                document.getElementById("msg").textContent = response.statusText;
+                document.getElementById("body").textContent = await response.text();
+            }
+
+        </script> v2--> 
+
+        <script src="client.js"></script>
+        <link href="css/bootstrap.min.css" rel="stylesheet" />
+    </head>
+<body>
+    <img src="city.jpg" style="width: 100%; display: block; margin-bottom: 2px; height: 520px;">
+    <button id="btn" class="btn btn-primary my-2">Send Request</button>
+    <div id="msg"></div>
+    <div id="body"></div>
+</body>
+</html>

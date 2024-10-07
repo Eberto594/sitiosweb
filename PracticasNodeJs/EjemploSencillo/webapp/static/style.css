@@ -1,0 +1,63 @@
+.titulo h2{
+    text-align: center;
+    font-weight: bold;
+    font-size: 3rem;
+    margin-bottom: 30px;
+
+}
+
+.contactos{
+    font-size: 1.2em;
+    /* border: solid black 1px; */
+    margin-top: 50px;
+    text-align: center;
+}
+
+.modificar img{
+    height: 25px;
+
+}
+
+.eliminar img {
+    height: 25px;
+}
+
+.formulario {
+    padding: 30px;
+    border: solid #dedede 3px;
+    margin-top: 30px;
+    /* text-align: center; */
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+.formulario button{
+    font-weight: bold;
+}
+
+.formulario input{
+    margin-bottom: 20px;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+    height: 40px;
+}
+
+.boton{
+    width: 150px;
+    margin-top: 20px;
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+}
+
+
+.formulario1 input{
+    height: 40px; 
+}
+
+.formulario1 input, button{
+    /* border: solid black 1px; */
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.3);
+
+}
+
+
+.contactos{
+    font-size: 1.7rem;
+}
