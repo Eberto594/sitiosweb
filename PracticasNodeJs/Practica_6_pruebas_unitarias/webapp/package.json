@@ -5,7 +5,8 @@
   "scripts": {
     "server": "tsc-watch --noClear --onsuccess \"node dist/server.js\"",
     "client": "webpack serve",
-    "start": "npm-run-all --parallel server client"
+    "start": "npm-run-all --parallel server client",
+    "test": "node --test --watch dist"
   },
   "keywords": [],
   "author": "",

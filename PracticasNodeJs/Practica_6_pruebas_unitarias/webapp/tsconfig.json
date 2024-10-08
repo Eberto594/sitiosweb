@@ -3,5 +3,8 @@
     "compilerOptions": {
         "rootDir": "src", //Aqui se guardan los archivos TypeScript
         "outDir": "dist", //Aqui se guardan los archios JavaScript
-    }
+        "allowJs": true,
+        "sourceMap": true
+    },
+    "include": ["src/**/*"]
 }
