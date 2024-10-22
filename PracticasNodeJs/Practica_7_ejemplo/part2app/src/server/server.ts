@@ -15,11 +15,12 @@ const proxy = httpProxy.createProxyServer({
 
 expressApp.use(helmet());
 expressApp.use(express.json());
+expressApp.post("/test", testHandler);
 expressApp.use(express.static("static"));
 expressApp.use(express.static("node_modules/bootstrap/dist"));
 expressApp.use((req, resp) => proxy.web(req, resp));
 
-expressApp.post("/test", testHandler);
+
 
 
 const server = createServer(expressApp);

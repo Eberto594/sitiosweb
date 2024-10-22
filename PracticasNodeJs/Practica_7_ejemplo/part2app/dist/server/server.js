@@ -16,10 +16,10 @@ const proxy = http_proxy_1.default.createProxyServer({
 });
 expressApp.use((0, helmet_1.default)());
 expressApp.use(express_1.default.json());
+expressApp.post("/test", testHandler_1.testHandler);
 expressApp.use(express_1.default.static("static"));
 expressApp.use(express_1.default.static("node_modules/bootstrap/dist"));
 expressApp.use((req, resp) => proxy.web(req, resp));
-expressApp.post("/test", testHandler_1.testHandler);
 const server = (0, http_1.createServer)(expressApp);
 server.on('upgrade', (req, socket, head) => proxy.ws(req, socket, head));
 server.listen(port, () => console.log(`HTTP server listening on port ${port}`));

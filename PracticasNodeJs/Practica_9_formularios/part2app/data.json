@@ -1,0 +1,14 @@
+[
+    {
+        "city": "Londo", 
+        "population": 9882000
+    },
+    { 
+        "city": "Paris",
+        "population": 2161000 
+    },
+    { 
+        "city": "Beijing",
+        "population": 21540000 
+    }
+]
