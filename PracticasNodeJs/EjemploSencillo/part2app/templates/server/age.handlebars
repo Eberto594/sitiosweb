@@ -1,0 +1,54 @@
+<div class="m-2">
+    {{#if validation.valid }}
+        <h4>Hello {{name}}. You will be {{nextage}} next year.</h4>
+    {{/if }}
+</div>
+
+<div>
+    <form id="age_form" action="/form" method="post">
+        <div class="m-2">
+            <label class="form-label">Nombre</label>
+            <input name="nombre" class="form-control" value="{{name}}"/>
+            <div class="text-danger" id="err_name_required"style="{{ pass validation 'name' 'required' }}">
+                Please enter your name
+            </div>
+            <div class="text-danger" id="err_name_minLength"style="{{ pass validation 'name' 'minLength' }}">
+                Enter at least 5 characters
+            </div>
+            <p>{{name}}</p>
+        </div>
+
+        <div class="m-2">
+            <label class="form-label">Edad</label>
+            <input name="edad" class="form-control" value="{{age}}" />
+            <div class="text-danger" id="err_age_isInteger" style="{{ pass validation 'age' 'isInteger' }}">
+                Please enter your age in whole years
+            </div>
+        </div>
+
+        <div class="m-2">
+            <button class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+<h1>Lista de Contactos</h1>
+    <ul>
+        {{#if contactos.length}}
+            {{#each contactos}}
+                {{!-- <li>Nombre: {{this.name}}, Edad: {{this.age}}</li> --}}
+                <form action="/editar/{{this.id}}" method="POST">
+                    <p>{{this.id}}</p>
+                    <input type="text" value="{{this.name}}" name="name">
+                    <input type="text" value="{{this.age}}" name="age">
+                    <button type="submit">Editar</button>
+                </form>
+
+                <form action="/borrar/{{this.id}}">
+                    <button>borrar</button>
+                </form>
+            {{/each}}
+        {{else}}
+            <li>No hay contactos para mostrar</li>
+        {{/if}}
+    </ul>
