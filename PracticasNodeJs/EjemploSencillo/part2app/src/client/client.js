@@ -10,7 +10,11 @@ document.addEventListener('DOMContentLoaded', () => {
         const ageValid = validate("age", data)
             .isInteger();
 
-        const allValid = [nameValid, ageValid].flatMap(v_result =>
+        const phoneValid = validate("phone", data)
+            .required()
+            .minLength(10);
+
+        const allValid = [nameValid, ageValid, phoneValid].flatMap(v_result =>
             Object.entries(v_result.results).map(([test, valid]) => {
                 const e = document.getElementById(
                     `err_${v_result.propertyName}_${test}`);
@@ -22,6 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ev.preventDefault();
         }
     });
+
+    
 
     // Confirmación de borrado
     document.querySelectorAll('.delete-btn').forEach(button => {

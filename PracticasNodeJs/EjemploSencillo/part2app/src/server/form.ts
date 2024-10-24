@@ -43,13 +43,13 @@ export const registerFormRoutes = (app: Express) => {
     app.post("/editar/:id", (req: Request, res: Response) => {
 
         const { id } = req.params;
-        const { name, age } = req.body;
+        const { name, age, phone } = req.body;
         let contactos = JSON.parse(readFileSync("./static/contacts.json").toString());
 
 
         // Actualizar el contacto en el array solo después de haber leído y parseado el archivo
         contactos = contactos.map((contacto: any) =>
-            contacto.id == id ? { ...contacto, name, age } : contacto
+            contacto.id == id ? { ...contacto, name, age, phone } : contacto
         );
 
         // Guardar el arreglo actualizado en el archivo JSON
@@ -105,7 +105,8 @@ export const registerFormRoutes = (app: Express) => {
                     const nuevoContacto = {
                         id: Date.now(),
                         name: context.name,
-                        age: context.age
+                        age: context.age,
+                        phone: context.phone
                     };
 
                     contactos.push(nuevoContacto);

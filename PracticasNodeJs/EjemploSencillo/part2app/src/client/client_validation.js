@@ -43,6 +43,12 @@ export const validate = (propName, formdata) => {
         return validationChain;
     };
 
+    validationChain.exactLength = () => {
+        results.exactLength = validator.isLength(val, { min: 10, max: 10 }); // Exactamente 10 caracteres
+        return validationChain;
+    };
+    
+
     validationChain.isInteger = () => {
         results.isInteger = validator.isInt(val);
             return validationChain;

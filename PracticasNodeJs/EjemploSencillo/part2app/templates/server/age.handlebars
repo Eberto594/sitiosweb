@@ -30,13 +30,16 @@
                             </div>
                         </div>
 
-                        {{!-- <div class="col-lg-6">
+                        <div class="col-lg-6">
                             <label class="form-label">Telefono</label>
-                            <input name="telefono" class="form-control" value="{{phone}}" />
-                            <div class="text-danger" id="err_age_isInteger" style="{{ pass validation 'phone' 'isInteger' }}">
-                                Please enter your age in whole years
+                            <input name="phone" class="form-control" value="{{phone}}" />
+                            <div class="text-danger" id="err_phone_required" style="{{ pass validation 'phone' 'required' }}">
+                                Escribe tu telefono
                             </div>
-                        </div> --}}
+                            <div class="text-danger" id="err_phone_minLength" style="{{ pass validation 'phone' 'minLength' }}">
+                                Son 10 caracteres
+                            </div>
+                        </div>
 
                         <div class="m-2 col-lg-12">
                             <button class="btn btn-primary">Agregar</button>
@@ -72,9 +75,9 @@
                                             <input type="text" class="form-control" value="{{this.age}}">
                                         </div>
 
-                                        {{!-- <div class="col-lg-2">
-                                            <input type="text" class="form-control" value="{{this.phone}}" name="phone">
-                                        </div> --}}
+                                        <div class="col-lg-2">
+                                            <input type="text" class="form-control" value="{{this.phone}}">
+                                        </div>
                                     </div>
                                 </form> 
                             </div>

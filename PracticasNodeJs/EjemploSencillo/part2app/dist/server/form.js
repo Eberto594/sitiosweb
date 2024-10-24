@@ -39,10 +39,10 @@ const registerFormRoutes = (app) => {
     });
     app.post("/editar/:id", (req, res) => {
         const { id } = req.params;
-        const { name, age } = req.body;
+        const { name, age, phone } = req.body;
         let contactos = JSON.parse((0, fs_1.readFileSync)("./static/contacts.json").toString());
         // Actualizar el contacto en el array solo después de haber leído y parseado el archivo
-        contactos = contactos.map((contacto) => contacto.id == id ? { ...contacto, name, age } : contacto);
+        contactos = contactos.map((contacto) => contacto.id == id ? { ...contacto, name, age, phone } : contacto);
         // Guardar el arreglo actualizado en el archivo JSON
         (0, fs_1.writeFileSync)("./static/contacts.json", JSON.stringify(contactos, null, 2));
         res.redirect("/form");
@@ -85,7 +85,8 @@ const registerFormRoutes = (app) => {
                 const nuevoContacto = {
                     id: Date.now(),
                     name: context.name,
-                    age: context.age
+                    age: context.age,
+                    phone: context.phone
                 };
                 contactos.push(nuevoContacto);
                 // Guardar los datos actualizados en el archivo JSON
