@@ -1,8 +1,8 @@
-<div class="m-2">
+{{!-- <div class="m-2">
     {{#if validation.valid }}
         <h4>Hello {{name}}. You will be {{nextage}} next year.</h4>
     {{/if }}
-</div>
+</div> --}}
 
 <div class="container">
     <div class="col-lg-10">
@@ -14,10 +14,10 @@
                             <label class="form-label">Nombre</label>
                             <input name="name" class="form-control" value="{{name}}"/>
                             <div class="text-danger" id="err_name_required" style="{{ pass validation 'name' 'required' }}">
-                                Please enter your name
+                                Escribe tu nombre
                             </div>
                             <div class="text-danger" id="err_name_minLength" style="{{ pass validation 'name' 'minLength' }}">
-                                Enter at least 5 characters
+                                Al menos 3 caracteres
                             </div>
                             
                         </div>
@@ -26,7 +26,7 @@
                             <label class="form-label">Edad</label>
                             <input name="age" class="form-control" value="{{age}}" />
                             <div class="text-danger" id="err_age_isInteger" style="{{ pass validation 'age' 'isInteger' }}">
-                                Please enter your age in whole years
+                                Escribe tu edad completa
                             </div>
                         </div>
 
@@ -50,11 +50,11 @@
 
 <h1>Lista de Contactos</h1>
     <ol>
-        {{!-- {{#if contactos.length}} --}}
+        {{#if contactos.length}}
             
-        {{!-- {{else}}
-            <li>No hay contactos para mostrar</li> --}}
-        {{!-- {{/if}} --}}
+        {{else}}
+            <li>No hay contactos para mostrar</li>
+        {{/if}}
         {{#each contactos}}
                 <li>
 

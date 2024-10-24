@@ -66,7 +66,7 @@ export const registerFormRoutes = (app: Express) => {
         res.redirect("/form");
     })
 
-    app.post("/form", validate("name").required().minLength(3), validate("age").isInteger(), (req, resp) => {
+    app.post("/form",(req, resp) => {
             const validation = getValidationResults(req);
             console.log(req.body);
             const context = {
@@ -129,7 +129,7 @@ export const registerFormRoutes = (app: Express) => {
 
                 })
             }
-            
+            // resp.render("age", {contactos, helpers:{pass}});
         });
 }
 

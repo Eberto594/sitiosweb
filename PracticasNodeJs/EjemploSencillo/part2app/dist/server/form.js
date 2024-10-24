@@ -55,7 +55,7 @@ const registerFormRoutes = (app) => {
         (0, fs_1.writeFileSync)("./static/contacts.json", JSON.stringify(contactos, null, 2));
         res.redirect("/form");
     });
-    app.post("/form", (0, validation_1.validate)("name").required().minLength(3), (0, validation_1.validate)("age").isInteger(), (req, resp) => {
+    app.post("/form", (req, resp) => {
         const validation = (0, validation_1.getValidationResults)(req);
         console.log(req.body);
         const context = {
@@ -106,6 +106,7 @@ const registerFormRoutes = (app) => {
                 });
             });
         }
+        // resp.render("age", {contactos, helpers:{pass}});
     });
 };
 exports.registerFormRoutes = registerFormRoutes;
