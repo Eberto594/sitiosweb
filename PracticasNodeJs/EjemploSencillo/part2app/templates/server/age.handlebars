@@ -4,51 +4,93 @@
     {{/if }}
 </div>
 
-<div>
-    <form id="age_form" action="/form" method="post">
-        <div class="m-2">
-            <label class="form-label">Nombre</label>
-            <input name="nombre" class="form-control" value="{{name}}"/>
-            <div class="text-danger" id="err_name_required"style="{{ pass validation 'name' 'required' }}">
-                Please enter your name
-            </div>
-            <div class="text-danger" id="err_name_minLength"style="{{ pass validation 'name' 'minLength' }}">
-                Enter at least 5 characters
-            </div>
-            <p>{{name}}</p>
-        </div>
+<div class="container">
+    <div class="col-lg-10">
+        <div class="row">
+            <div class="col-lg-12">
+                <form id="age_form" action="/form" method="post">
+                    <div class="row">
+                        <div class=" col-lg-6" >
+                            <label class="form-label">Nombre</label>
+                            <input name="name" class="form-control" value="{{name}}"/>
+                            <div class="text-danger" id="err_name_required" style="{{ pass validation 'name' 'required' }}">
+                                Please enter your name
+                            </div>
+                            <div class="text-danger" id="err_name_minLength" style="{{ pass validation 'name' 'minLength' }}">
+                                Enter at least 5 characters
+                            </div>
+                            
+                        </div>
 
-        <div class="m-2">
-            <label class="form-label">Edad</label>
-            <input name="edad" class="form-control" value="{{age}}" />
-            <div class="text-danger" id="err_age_isInteger" style="{{ pass validation 'age' 'isInteger' }}">
-                Please enter your age in whole years
+                        <div class=" col-lg-6">
+                            <label class="form-label">Edad</label>
+                            <input name="age" class="form-control" value="{{age}}" />
+                            <div class="text-danger" id="err_age_isInteger" style="{{ pass validation 'age' 'isInteger' }}">
+                                Please enter your age in whole years
+                            </div>
+                        </div>
+
+                        {{!-- <div class="col-lg-6">
+                            <label class="form-label">Telefono</label>
+                            <input name="telefono" class="form-control" value="{{phone}}" />
+                            <div class="text-danger" id="err_age_isInteger" style="{{ pass validation 'phone' 'isInteger' }}">
+                                Please enter your age in whole years
+                            </div>
+                        </div> --}}
+
+                        <div class="m-2 col-lg-12">
+                            <button class="btn btn-primary">Agregar</button>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-
-        <div class="m-2">
-            <button class="btn btn-primary">Submit</button>
-        </div>
-    </form>
+    </div>
 </div>
 
 <h1>Lista de Contactos</h1>
-    <ul>
-        {{#if contactos.length}}
-            {{#each contactos}}
-                {{!-- <li>Nombre: {{this.name}}, Edad: {{this.age}}</li> --}}
-                <form action="/editar/{{this.id}}" method="POST">
-                    <p>{{this.id}}</p>
-                    <input type="text" value="{{this.name}}" name="name">
-                    <input type="text" value="{{this.age}}" name="age">
-                    <button type="submit">Editar</button>
-                </form>
+    <ol>
+        {{!-- {{#if contactos.length}} --}}
+            
+        {{!-- {{else}}
+            <li>No hay contactos para mostrar</li> --}}
+        {{!-- {{/if}} --}}
+        {{#each contactos}}
+                <li>
 
-                <form action="/borrar/{{this.id}}">
-                    <button>borrar</button>
-                </form>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-10">
+                                <form action="/editar/{{this.id}}" method="POST">
+                                    <div class="row">
+                                        {{!-- <p>{{this.id}}</p> --}}
+                                        <div class="col-lg-2">
+                                            <input type="text" class="form-control" value="{{this.name}}">
+                                        </div>
+
+                                        <div class="col-lg-2">
+                                            <input type="text" class="form-control" value="{{this.age}}">
+                                        </div>
+
+                                        {{!-- <div class="col-lg-2">
+                                            <input type="text" class="form-control" value="{{this.phone}}" name="phone">
+                                        </div> --}}
+                                    </div>
+                                </form> 
+                            </div>
+
+                            <div class="col-lg-1">
+                                <button type="submit" class="btn btn-primary">Editar</button>
+                            </div>
+
+                            <div class="col-lg-1">
+                                <form action="/borrar/{{this.id}}" method="POST">
+                                    <button type="submit" class="btn btn-danger">borrar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+            </li>
+            <br>
             {{/each}}
-        {{else}}
-            <li>No hay contactos para mostrar</li>
-        {{/if}}
-    </ul>
+    </ol>

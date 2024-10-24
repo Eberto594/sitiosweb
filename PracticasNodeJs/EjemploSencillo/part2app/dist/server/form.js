@@ -38,29 +38,6 @@ const registerFormRoutes = (app) => {
         });
     });
     app.post("/editar/:id", (req, res) => {
-        // const { id } = req.params;
-        // const { name, age} = req.body;
-        // // let contacts = leerContactos();
-        // let contactos:any = [];
-        // const filePath = path.join("./static/", 'contacts.json');
-        // //leer el archivo actual y agregar el nuevo contacto
-        // fs.readFile(filePath, 'utf-8', (err: any, data:any) => {
-        //     if(err && err.code !== 'ENOENT'){
-        //         console.log("Error al leer el archivo JSON: ", err);
-        //     }
-        //     if(!err){
-        //         try{
-        //             contactos = JSON.parse(data);
-        //         }
-        //         catch(parseErr){
-        //             console.log("Error al parsear el archivo JSON", parseErr);
-        //         }
-        //     }
-        // });
-        // contactos = contactos.map((contacto: any) =>
-        //     contacto.id == id ? { ...contacto, name, age} : contacto
-        // );
-        // res.redirect("/form");
         const { id } = req.params;
         const { name, age } = req.body;
         let contactos = JSON.parse((0, fs_1.readFileSync)("./static/contacts.json").toString());
@@ -71,15 +48,21 @@ const registerFormRoutes = (app) => {
         res.redirect("/form");
     });
     app.post("/borrar/:id", (req, res) => {
-        res.end(req.body.id);
+        const { id } = req.params;
+        let contactos = JSON.parse((0, fs_1.readFileSync)("./static/contacts.json").toString());
+        contactos = contactos.filter((contact) => contact.id != id);
+        // Guardar el arreglo actualizado en el archivo JSON
+        (0, fs_1.writeFileSync)("./static/contacts.json", JSON.stringify(contactos, null, 2));
+        res.redirect("/form");
     });
-    app.post("/form", (0, validation_1.validate)("nombre").required().minLength(3), (0, validation_1.validate)("edad").isInteger(), (req, resp) => {
+    app.post("/form", (0, validation_1.validate)("name").required().minLength(3), (0, validation_1.validate)("age").isInteger(), (req, resp) => {
         const validation = (0, validation_1.getValidationResults)(req);
         console.log(req.body);
         const context = {
             ...req.body, validation,
             helpers: { pass }
         };
+        let contactos = JSON.parse((0, fs_1.readFileSync)("./static/contacts.json").toString());
         if (validation.valid) {
             context.nextage = Number.parseInt(req.body.edad) + 1;
             const filePath = path_1.default.join("./static/", 'contacts.json');
@@ -87,27 +70,29 @@ const registerFormRoutes = (app) => {
             fs_2.default.readFile(filePath, 'utf-8', (err, data) => {
                 if (err && err.code !== 'ENOENT') {
                     console.log("Error al leer el archivo JSON: ", err);
+                    resp.render("age", context);
                 }
-                let contactos = [];
                 if (!err) {
                     try {
                         contactos = JSON.parse(data);
                     }
                     catch (parseErr) {
                         console.log("Error al parsear el archivo JSON", parseErr);
+                        resp.render("age", context);
                     }
                 }
                 //Agregar el nuevo contacto
                 const nuevoContacto = {
                     id: Date.now(),
-                    name: context.nombre,
-                    age: context.edad
+                    name: context.name,
+                    age: context.age
                 };
                 contactos.push(nuevoContacto);
                 // Guardar los datos actualizados en el archivo JSON
                 fs_2.default.writeFile(filePath, JSON.stringify(contactos, null, 2), (writeErr) => {
                     if (writeErr) {
                         console.error('Error al escribir en el archivo JSON:', writeErr);
+                        resp.render("age", context);
                     }
                     else {
                         console.log('Nuevo contacto agregado al archivo JSON');
@@ -127,8 +112,4 @@ exports.registerFormRoutes = registerFormRoutes;
 const pass = (valid, propname, test) => {
     let propResult = valid?.results?.[propname];
     return `display: ${!propResult || propResult[test] ? "none" : "block"}`;
-};
-const guardarContacto = (name, age) => {
-};
-const leerContactos = () => {
 };

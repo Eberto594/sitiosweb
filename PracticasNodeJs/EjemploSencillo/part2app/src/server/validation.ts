@@ -23,9 +23,10 @@ export const validate = (propName: string) => {
         vreq.validation.results[propName] = { valid: true };
 
         Object.keys(tests).forEach(k => {
-            
+            console.log(`Validating ${k} for ${propName}:`, req.body?.[propName]);  // Agrega este log
             let valid = vreq.validation.results[propName][k] = tests[k](req.body?.[propName]);
             if (!valid) {
+                console.log(`${k} validation failed for ${propName}`);
                 vreq.validation.results[propName].valid = false;
                 vreq.validation.valid = false;
             }

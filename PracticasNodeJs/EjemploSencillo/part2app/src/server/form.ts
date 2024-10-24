@@ -41,31 +41,6 @@ export const registerFormRoutes = (app: Express) => {
     }); 
 
     app.post("/editar/:id", (req: Request, res: Response) => {
-        // const { id } = req.params;
-        // const { name, age} = req.body;
-        // // let contacts = leerContactos();
-        // let contactos:any = [];
-        // const filePath = path.join("./static/", 'contacts.json');
-
-        // //leer el archivo actual y agregar el nuevo contacto
-        // fs.readFile(filePath, 'utf-8', (err: any, data:any) => {
-        //     if(err && err.code !== 'ENOENT'){
-        //         console.log("Error al leer el archivo JSON: ", err);
-        //     }
-        //     if(!err){
-        //         try{
-        //             contactos = JSON.parse(data);
-        //         }
-        //         catch(parseErr){
-        //             console.log("Error al parsear el archivo JSON", parseErr);
-        //         }
-        //     }
-        // });
-
-        // contactos = contactos.map((contacto: any) =>
-        //     contacto.id == id ? { ...contacto, name, age} : contacto
-        // );
-        // res.redirect("/form");
 
         const { id } = req.params;
         const { name, age } = req.body;
@@ -83,10 +58,15 @@ export const registerFormRoutes = (app: Express) => {
     });
 
     app.post("/borrar/:id", (req: Request, res: Response) => {
-        res.end(req.body.id);
+        const { id } = req.params;
+        let contactos = JSON.parse(readFileSync("./static/contacts.json").toString());
+        contactos = contactos.filter((contact: any) => contact.id != id);
+        // Guardar el arreglo actualizado en el archivo JSON
+        writeFileSync("./static/contacts.json", JSON.stringify(contactos, null, 2));
+        res.redirect("/form");
     })
 
-    app.post("/form", validate("nombre").required().minLength(3), validate("edad").isInteger(), (req, resp) => {
+    app.post("/form", validate("name").required().minLength(3), validate("age").isInteger(), (req, resp) => {
             const validation = getValidationResults(req);
             console.log(req.body);
             const context = {
@@ -94,8 +74,10 @@ export const registerFormRoutes = (app: Express) => {
                 helpers: { pass }
             };
             
+            let contactos = JSON.parse(readFileSync("./static/contacts.json").toString());
 
-            if (validation.valid) {
+
+            if(validation.valid){
                 context.nextage = Number.parseInt(req.body.edad) + 1;
                 
                 const filePath = path.join("./static/", 'contacts.json');
@@ -104,9 +86,10 @@ export const registerFormRoutes = (app: Express) => {
                 fs.readFile(filePath, 'utf-8', (err: any, data:any) => {
                     if(err && err.code !== 'ENOENT'){
                         console.log("Error al leer el archivo JSON: ", err);
+                        resp.render("age", context);
                     }
 
-                    let contactos:any = [];
+                    
 
                     if(!err){
                         try{
@@ -114,14 +97,15 @@ export const registerFormRoutes = (app: Express) => {
                         }
                         catch(parseErr){
                             console.log("Error al parsear el archivo JSON", parseErr);
+                            resp.render("age", context);
                         }
                     }
 
                     //Agregar el nuevo contacto
                     const nuevoContacto = {
                         id: Date.now(),
-                        name: context.nombre,
-                        age: context.edad
+                        name: context.name,
+                        age: context.age
                     };
 
                     contactos.push(nuevoContacto);
@@ -130,6 +114,7 @@ export const registerFormRoutes = (app: Express) => {
                     fs.writeFile(filePath, JSON.stringify(contactos, null, 2), (writeErr:any) => {
                         if (writeErr) {
                             console.error('Error al escribir en el archivo JSON:', writeErr);
+                            resp.render("age", context);
                         } else {
                             console.log('Nuevo contacto agregado al archivo JSON');
                         }
@@ -144,6 +129,7 @@ export const registerFormRoutes = (app: Express) => {
 
                 })
             }
+            
         });
 }
 
@@ -151,12 +137,4 @@ const pass = (valid: any, propname: string, test:string) => {
     let propResult = valid?.results?.[propname];
 
     return `display: ${!propResult || propResult[test] ? "none" : "block"}`;
-}
-
-const guardarContacto = (name:string, age:string) => {
-    
-}
-
-const leerContactos = () => {
-    
 }
