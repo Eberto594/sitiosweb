@@ -68,23 +68,28 @@
                                     <div class="row">
                                         {{!-- <p>{{this.id}}</p> --}}
                                         <div class="col-lg-2">
-                                            <input type="text" class="form-control" value="{{this.name}}">
+                                            <label class="form-label">Nombre</label>
+                                            <input name="nombre" type="text" class="form-control" value="{{this.name}}">
                                         </div>
 
                                         <div class="col-lg-2">
-                                            <input type="text" class="form-control" value="{{this.age}}">
+                                            <label class="form-label">Edad</label>
+                                            <input name="edad" type="text" class="form-control" value="{{this.age}}">
                                         </div>
 
                                         <div class="col-lg-2">
-                                            <input type="text" class="form-control" value="{{this.phone}}">
+                                            <label class="form-label">Telefono</label>
+                                            <input name="telefono" type="text" class="form-control" value="{{this.phone}}">
+                                        </div>
+
+                                         <div class="col-lg-1">
+                                            <button type="submit" class="btn btn-primary">Editar</button>
                                         </div>
                                     </div>
                                 </form> 
                             </div>
 
-                            <div class="col-lg-1">
-                                <button type="submit" class="btn btn-primary">Editar</button>
-                            </div>
+                           
 
                             <div class="col-lg-1">
                                 <form id="delete-form-{{this.id}}" action="/borrar/{{this.id}}" method="POST">

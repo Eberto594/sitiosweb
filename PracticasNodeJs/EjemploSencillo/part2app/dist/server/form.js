@@ -39,8 +39,11 @@ const registerFormRoutes = (app) => {
     });
     app.post("/editar/:id", (req, res) => {
         const { id } = req.params;
-        const { name, age, phone } = req.body;
+        const { nombre, edad, telefono } = req.body;
         let contactos = JSON.parse((0, fs_1.readFileSync)("./static/contacts.json").toString());
+        let name = nombre;
+        let age = edad;
+        let phone = telefono;
         // Actualizar el contacto en el array solo después de haber leído y parseado el archivo
         contactos = contactos.map((contacto) => contacto.id == id ? { ...contacto, name, age, phone } : contacto);
         // Guardar el arreglo actualizado en el archivo JSON

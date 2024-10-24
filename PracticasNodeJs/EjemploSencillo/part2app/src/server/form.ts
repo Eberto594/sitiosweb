@@ -43,10 +43,12 @@ export const registerFormRoutes = (app: Express) => {
     app.post("/editar/:id", (req: Request, res: Response) => {
 
         const { id } = req.params;
-        const { name, age, phone } = req.body;
+        const { nombre, edad, telefono } = req.body;
         let contactos = JSON.parse(readFileSync("./static/contacts.json").toString());
 
-
+        let name = nombre;
+        let age = edad;
+        let phone = telefono;
         // Actualizar el contacto en el array solo después de haber leído y parseado el archivo
         contactos = contactos.map((contacto: any) =>
             contacto.id == id ? { ...contacto, name, age, phone } : contacto
