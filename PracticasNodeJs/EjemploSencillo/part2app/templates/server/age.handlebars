@@ -84,8 +84,8 @@
                             </div>
 
                             <div class="col-lg-1">
-                                <form action="/borrar/{{this.id}}" method="POST">
-                                    <button type="submit" class="btn btn-danger">borrar</button>
+                                <form id="delete-form-{{this.id}}" action="/borrar/{{this.id}}" method="POST">
+                                    <button type="button" class="btn btn-danger delete-btn" data-id="{{this.id}}">borrar</button>
                                 </form>
                             </div>
                         </div>

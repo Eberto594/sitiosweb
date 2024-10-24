@@ -22,4 +22,17 @@ document.addEventListener('DOMContentLoaded', () => {
             ev.preventDefault();
         }
     });
+
+    // Confirmación de borrado
+    document.querySelectorAll('.delete-btn').forEach(button => {
+        button.addEventListener('click', function() {
+            const contactId = this.dataset.id; // Obtén el id del contacto del dataset
+            const confirmed = confirm("¿Estás seguro de que deseas eliminar este contacto?");
+            if (confirmed) {
+                document.getElementById(`delete-form-${contactId}`).submit();
+            }
+            // Si se cancela, simplemente no se hace nada
+        });
+    });
+    
 });
