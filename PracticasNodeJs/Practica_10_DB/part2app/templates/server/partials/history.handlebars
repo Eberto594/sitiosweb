@@ -1,0 +1,33 @@
+{{!-- 
+    La plantilla parcial muestra los datos proporcionados a través de 
+    una propiedad de contexto history y muestra un mensaje predeterminado 
+    cuando no hay datos disponibles.
+ --}}
+
+<h4>Recent Queries</h4>
+<table class="table table-sm table-striped my-2">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Years</th>
+            <th>Result</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        {{#unless history}}
+            <tr>
+                <td colspan="4">No data available</td>
+            </tr>
+        {{/unless}}
+        {{#each history}}
+            <tr>
+                <td>{{ this.name }}</td>
+                <td>{{ this.age  }}</td>
+                <td>{{ this.years }}</td>
+                <td>{{ this.nextage }}</td>
+            </tr>
+        {{/each}}
+    </tbody>
+</table>
