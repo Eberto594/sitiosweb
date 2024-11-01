@@ -11,22 +11,6 @@ import { Model, CreationOptional, ForeignKey, InferCreationAttributes, InferAttr
 // el tipo InferCreationAttributes<Person> excluye las propiedades cuyo tipo es CreationOptional<T>.
 export class Person extends Model<InferAttributes<Person>, InferCreationAttributes<Person>> {
     declare id?: CreationOptional<number>;
-    declare name: string
+    declare name: string;
+    declare lastname: string;
 }
-
-// export class Calculation extends Model<InferAttributes<Calculation>, InferCreationAttributes<Calculation>> {
-//     // El tipo CreationOptional<T> se utiliza para describir 
-//     // una propiedad que no tiene que proporcionarse cuando se crea una nueva instancia de la clase del modelo
-//     declare id?: CreationOptional<number>;
-//     declare age: number;
-//     declare years: number;
-//     declare nextage: number;
-// }
-
-// export class ResultModel extends Model<InferAttributes<ResultModel>, InferCreationAttributes<ResultModel>> {
-//     declare id: CreationOptional<number>;
-//     declare personId: ForeignKey<Person["id"]>;
-//     declare calculationId: ForeignKey<Calculation["id"]>;
-//     declare Person?: InferAttributes<Person>;
-//     declare Calculation?: InferAttributes<Calculation>;
-// }

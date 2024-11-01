@@ -19,7 +19,8 @@ export const initializeModels = (sequelize: Sequelize) => {
     // de configuración que le indica a Sequelize cómo representar los datos en la base de datos.
     Person.init({
         ...primaryKey,
-        name: { type: DataTypes.STRING }
+        name: { type: DataTypes.STRING },
+        lastname: {type: DataTypes.STRING}
     }, { sequelize });
 
 
@@ -58,14 +59,8 @@ export const addSeedData = async (sequelize: Sequelize) => {
     // Sequelize agrega estas columnas para realizar un seguimiento de 
     // cuándo se crean y modifican las filas de la tabla.
     await sequelize.query(`
-        INSERT INTO People (id, name, createdAt, updatedAt) VALUES
-        (1, 'Alice', date(), date()), (2, "Bob", date(), date())`);
-
-
-    // await sequelize.query(`
-    //     INSERT INTO ResultModels (calculationId, personId, createdAt, updatedAt) VALUES
-    //     (1, 1, date(), date()), (2, 2, date(), date()),
-    //     (2, 1, date(), date());`);
+        INSERT INTO People (id, name, lastname, createdAt, updatedAt) VALUES
+        (1, "Alice", "Robles", date(), date()), (2, "Bob", "Gutierrez", date(), date())`);
 }
 
 // función que transforma los objetos ResultModel proporcionados por 
@@ -73,7 +68,8 @@ export const addSeedData = async (sequelize: Sequelize) => {
 export const fromOrmModel = (person: Person | null): Result => {
     return {
         id: person?.id || 0,
-        name: person?.name || ""
+        name: person?.name || "",
+        lastname: person?.lastname || ""
         // age: model?.Calculation?.age || 0,
         // years: model?.Calculation?.years || 0,
         // nextage: model?.Calculation?.age || 0

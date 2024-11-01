@@ -1,12 +1,8 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-7">
-            {{!-- MENSAJE DE AÑOS PROXIMOS --}}
-            {{#if name}}
-                <div class="m-2">
-                    <h4>Hello {{ name }}. You will be {{ nextage }} in {{ years }} years.</h4>
-                </div>
-            {{/if}}
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h2 class="text-center">Agenda web</h2>
 
             {{!-- FORMULARIO --}}
             <div>
@@ -17,14 +13,14 @@
                     </div>
 
                     <div class="m-2">
-                        <label class="form-label">Current Age</label>
-                        <input name="age" class="form-control"value="{{ age }}" />
+                        <label class="form-label">Apellido</label>
+                        <input name="lastname" class="form-control"value="{{ lastname }}" />
                     </div>
 
-                    <div class="m-2">
+                    {{!-- <div class="m-2">
                         <label class="form-label">Number of Years</label>
                         <input name="years" class="form-control" value="{{ years }}" />
-                    </div>
+                    </div> --}}
 
                     <div class="m-2">
                         <button class="btn btn-primary">Submit</button>
@@ -32,9 +28,10 @@
                 </form>
             </div>
         </div>
+        <div class="col-3"></div>
 
         {{!-- HISTORIAL DE REGISTROS ES UNA PLATILLA PARCIAL --}}
-        <div class="col-5">
+        <div class="col-12 m-2">
             {{> history }}
         </div>
     </div>

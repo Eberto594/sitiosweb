@@ -35,34 +35,9 @@ class OrmRepository {
         // se llama a la función addSeedData para agregar los datos iniciales a la base de datos
         await (0, orm_helpers_1.addSeedData)(this.sequelize);
     }
-    // async saveResult(r: Result): Promise<number> {
-    //     // La transacción se crea con el método Sequelize.transaction, 
-    //     // que acepta una función de devolución de llamada que recibe un objeto Transaction
-    //     return await this.sequelize.transaction(async (tx) => {
-    //         // se utiliza el método findOrCreate para ver si hay objetos 
-    //         // Person y Calculation en la base de datos que coincidan con los 
-    //         // datos recibidos por el método saveResult.
-    //         // const [person] = await Person.findOrCreate({
-    //         //     where: { name: r.name },
-    //         //     transaction: tx
-    //         // });
-    //         return (await Person.create({
-    //             name: r.name
-    //         },{transaction: tx})).id;
-    //         // const [calculation] = await Calculation.findOrCreate({
-    //         //     where: {
-    //         //         age: r.age, years: r.years, nextage: r.nextage
-    //         //     },
-    //         //     transaction: tx
-    //         // });
-    //         // return (await ResultModel.create({
-    //         //     personId: person.id, calculationId: calculation.id},
-    //         //     { transaction: tx })).id;
-    //     });
-    // }
     async saveResult(r) {
         const result = await this.sequelize.transaction(async (tx) => {
-            const person = await orm_models_1.Person.create({ name: r.name }, { transaction: tx });
+            const person = await orm_models_1.Person.create({ name: r.name, lastname: r.lastname }, { transaction: tx });
             // Verifica que `person.id` no sea `undefined`
             if (person.id === undefined) {
                 throw new Error('Failed to create person: ID is undefined');
@@ -78,8 +53,7 @@ class OrmRepository {
     // y crear objetos a partir de los resultados
     async getAllResults(limit) {
         return (await orm_models_1.Person.findAll({
-            limit,
-            order: [["id", "DESC"]]
+            order: [["id", "ASC"]]
         })).map(row => (0, orm_helpers_1.fromOrmModel)(row));
     }
     // propiedad where, que le indica a Sequelize que siga la 
@@ -90,8 +64,49 @@ class OrmRepository {
             where: {
                 "$Person.name$": name
             },
-            limit, order: [["id", "DESC"]]
+            limit, order: [["id", "ASC"]]
         })).map(row => (0, orm_helpers_1.fromOrmModel)(row));
+    }
+    async updateResult(r) {
+        // console.log(this.getResultsByName(r.name, 10));
+        try {
+            // Verificar si el registro existe
+            const existingRecord = await orm_models_1.Person.findByPk(r.id);
+            if (!existingRecord) {
+                console.log(`No se encontró un registro con id ${r.id}.`);
+                return;
+            }
+            const result = await orm_models_1.Person.update({ name: r.name, lastname: r.lastname }, {
+                where: {
+                    id: r.id
+                },
+            });
+            if (result[0] > 0) {
+                console.log(`Registro con id ${r.id} actualizado correctamente.`);
+            }
+            else {
+                console.log(`No se encontró un registro con id ${r.id} para actualizar.`);
+            }
+        }
+        catch (error) {
+            console.log(error);
+        }
+        // try{
+        //     const [person, created] = await Person.upsert({
+        //         id: r.id,
+        //         name: r.name,
+        //         lastname: r.lastname
+        //     });
+        //     if (created) {
+        //         console.log(`Registro creado con id ${r.id}.`);
+        //     }
+        //     else {
+        //         console.log(`Registro con id ${r.id} actualizado correctamente.`);
+        //     }
+        // }
+        // catch (error) {
+        //     console.error('Error al insertar o actualizar el registro:', error);
+        // }
     }
 }
 exports.OrmRepository = OrmRepository;

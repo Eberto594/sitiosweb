@@ -1,5 +1,4 @@
 import { Repository } from "./repository";
-// import { SqlRepository } from "./sql_repository";
 import { OrmRepository } from "./orm_repository";
 // Para que el repositorio esté disponible para el resto de la aplicación,
 

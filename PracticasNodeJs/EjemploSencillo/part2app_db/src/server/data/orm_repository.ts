@@ -37,39 +37,10 @@ export class OrmRepository implements Repository {
         await addSeedData(this.sequelize);
     }
 
-    // async saveResult(r: Result): Promise<number> {
-    //     // La transacción se crea con el método Sequelize.transaction, 
-    //     // que acepta una función de devolución de llamada que recibe un objeto Transaction
-    //     return await this.sequelize.transaction(async (tx) => {
-    //         // se utiliza el método findOrCreate para ver si hay objetos 
-    //         // Person y Calculation en la base de datos que coincidan con los 
-    //         // datos recibidos por el método saveResult.
-    //         // const [person] = await Person.findOrCreate({
-    //         //     where: { name: r.name },
-    //         //     transaction: tx
-    //         // });
-
-    //         return (await Person.create({
-    //             name: r.name
-    //         },{transaction: tx})).id;
-
-    //         // const [calculation] = await Calculation.findOrCreate({
-    //         //     where: {
-    //         //         age: r.age, years: r.years, nextage: r.nextage
-    //         //     },
-    //         //     transaction: tx
-    //         // });
-
-    //         // return (await ResultModel.create({
-    //         //     personId: person.id, calculationId: calculation.id},
-    //         //     { transaction: tx })).id;
-    //     });
-    // }
-
     async saveResult(r: Result): Promise<number> {
         const result = await this.sequelize.transaction(async (tx) => {
             const person = await Person.create(
-                { name: r.name },
+                { name: r.name, lastname: r.lastname },
                 { transaction: tx }
             );
             
@@ -95,8 +66,7 @@ export class OrmRepository implements Repository {
     async getAllResults(limit: number): Promise<Result[]> {
         return(
             await Person.findAll({
-                limit,
-                order: [["id", "DESC"]]
+                order: [["id", "ASC"]]
             })).map(row => fromOrmModel(row));
     }
 
@@ -109,8 +79,60 @@ export class OrmRepository implements Repository {
                 where: {
                     "$Person.name$": name
                 },
-                limit, order: [["id", "DESC"]]
+                limit, order: [["id", "ASC"]]
             })).map(row => fromOrmModel(row));
+    }
+
+    async updateResult(r: Result): Promise<void> {
+
+        // console.log(this.getResultsByName(r.name, 10));
+        try{
+            // Verificar si el registro existe
+            const existingRecord = await Person.findByPk(r.id);
+
+            if (!existingRecord) {
+                console.log(`No se encontró un registro con id ${r.id}.`);
+                return;
+            }
+
+
+            const result = await Person.update(
+                {name: r.name, lastname: r.lastname},
+                {
+                    where: {
+                        id: r.id
+                    },
+                }
+            );
+
+            if(result[0] > 0){
+                console.log(`Registro con id ${r.id} actualizado correctamente.`);
+            }
+            else{
+                console.log(`No se encontró un registro con id ${r.id} para actualizar.`);
+            }
+        }
+        catch(error){
+            console.log(error);
+        }
+
+        // try{
+        //     const [person, created] = await Person.upsert({
+        //         id: r.id,
+        //         name: r.name,
+        //         lastname: r.lastname
+        //     });
+
+        //     if (created) {
+        //         console.log(`Registro creado con id ${r.id}.`);
+        //     }
+        //     else {
+        //         console.log(`Registro con id ${r.id} actualizado correctamente.`);
+        //     }
+        // }
+        // catch (error) {
+        //     console.error('Error al insertar o actualizar el registro:', error);
+        // }
     }
 }
 

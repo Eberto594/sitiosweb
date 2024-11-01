@@ -18,16 +18,20 @@ const registerFormRoutes = (app) => {
         });
     });
     app.post("/form", async (req, resp) => {
-        const nextage = Number.parseInt(req.body.age)
-            + Number.parseInt(req.body.years);
-        await data_1.default.saveResult({ ...req.body, nextage });
+        await data_1.default.saveResult({ ...req.body });
         const context = {
-            ...req.body, nextage,
-            history: await data_1.default.getResultsByName(req.body.name, rowLimit)
+            ...req.body,
+            history: await data_1.default.getAllResults(rowLimit)
         };
         // Los resultados se pasan a la plantilla mediante una propiedad 
         // denominada history, que se utiliza para rellenar la tabla
         resp.render("age", context);
+    });
+    app.post("/editar/:id", async (req, res) => {
+        const id = parseInt(req.params.id);
+        console.log(req.body.name);
+        await data_1.default.updateResult({ ...req.body, id: id });
+        res.redirect("/form");
     });
 };
 exports.registerFormRoutes = registerFormRoutes;

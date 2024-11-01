@@ -8,7 +8,8 @@
 // las tablas de la base de datos en una estructura simple y plana
 export interface Result {
     id: number,
-    name: string
+    name: string,
+    lastname: string
     // age: number,
     // years: number,
     // nextage: number
@@ -20,4 +21,5 @@ export interface Repository {
     saveResult(r: Result): Promise<number>;
     getAllResults(limit: number) : Promise<Result[]>;
     getResultsByName(name: string, limit: number): Promise<Result[]>;
+    updateResult(r: Result): Promise<void>;
 }
