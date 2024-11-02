@@ -19,7 +19,8 @@ const initializeModels = (sequelize) => {
     orm_models_1.Person.init({
         ...primaryKey,
         name: { type: sequelize_1.DataTypes.STRING },
-        lastname: { type: sequelize_1.DataTypes.STRING }
+        lastname: { type: sequelize_1.DataTypes.STRING },
+        phone: { type: sequelize_1.DataTypes.STRING }
     }, { sequelize });
     // Calculation.init({
     //     ...primaryKey, 
@@ -63,7 +64,8 @@ const fromOrmModel = (person) => {
     return {
         id: person?.id || 0,
         name: person?.name || "",
-        lastname: person?.lastname || ""
+        lastname: person?.lastname || "",
+        phone: person?.phone || ""
         // age: model?.Calculation?.age || 0,
         // years: model?.Calculation?.years || 0,
         // nextage: model?.Calculation?.age || 0

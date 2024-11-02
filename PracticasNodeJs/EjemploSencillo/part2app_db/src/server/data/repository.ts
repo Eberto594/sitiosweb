@@ -9,7 +9,8 @@
 export interface Result {
     id: number,
     name: string,
-    lastname: string
+    lastname: string,
+    phone: string;
     // age: number,
     // years: number,
     // nextage: number
@@ -22,4 +23,5 @@ export interface Repository {
     getAllResults(limit: number) : Promise<Result[]>;
     getResultsByName(name: string, limit: number): Promise<Result[]>;
     updateResult(r: Result): Promise<void>;
+    deteleResult(id:number): Promise<void>;
 }

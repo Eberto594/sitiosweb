@@ -13,4 +13,5 @@ export class Person extends Model<InferAttributes<Person>, InferCreationAttribut
     declare id?: CreationOptional<number>;
     declare name: string;
     declare lastname: string;
+    declare phone: string;
 }

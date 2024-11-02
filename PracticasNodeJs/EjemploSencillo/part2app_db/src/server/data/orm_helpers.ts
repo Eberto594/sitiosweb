@@ -20,7 +20,8 @@ export const initializeModels = (sequelize: Sequelize) => {
     Person.init({
         ...primaryKey,
         name: { type: DataTypes.STRING },
-        lastname: {type: DataTypes.STRING}
+        lastname: {type: DataTypes.STRING},
+        phone: {type: DataTypes.STRING}
     }, { sequelize });
 
 
@@ -69,7 +70,8 @@ export const fromOrmModel = (person: Person | null): Result => {
     return {
         id: person?.id || 0,
         name: person?.name || "",
-        lastname: person?.lastname || ""
+        lastname: person?.lastname || "",
+        phone: person?.phone || ""
         // age: model?.Calculation?.age || 0,
         // years: model?.Calculation?.years || 0,
         // nextage: model?.Calculation?.age || 0

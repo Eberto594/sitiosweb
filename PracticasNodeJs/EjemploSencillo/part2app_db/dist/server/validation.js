@@ -1,15 +1,4 @@
 "use strict";
-// import { NextFunction, Request, Response } from "express";
-// type ValidatedRequest = Request & {
-//     validation: {
-//         results: {
-//             [key: string]: {
-//                 [key: string]: boolean, valid: boolean
-//             }
-//         },
-//         valid: boolean
-//     }
-// }
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };

@@ -40,7 +40,7 @@ export class OrmRepository implements Repository {
     async saveResult(r: Result): Promise<number> {
         const result = await this.sequelize.transaction(async (tx) => {
             const person = await Person.create(
-                { name: r.name, lastname: r.lastname },
+                { name: r.name, lastname: r.lastname, phone: r.phone},
                 { transaction: tx }
             );
             
@@ -97,7 +97,7 @@ export class OrmRepository implements Repository {
 
 
             const result = await Person.update(
-                {name: r.name, lastname: r.lastname},
+                {name: r.name, lastname: r.lastname, phone: r.phone},
                 {
                     where: {
                         id: r.id
@@ -115,24 +115,34 @@ export class OrmRepository implements Repository {
         catch(error){
             console.log(error);
         }
+    }
 
-        // try{
-        //     const [person, created] = await Person.upsert({
-        //         id: r.id,
-        //         name: r.name,
-        //         lastname: r.lastname
-        //     });
-
-        //     if (created) {
-        //         console.log(`Registro creado con id ${r.id}.`);
-        //     }
-        //     else {
-        //         console.log(`Registro con id ${r.id} actualizado correctamente.`);
-        //     }
-        // }
-        // catch (error) {
-        //     console.error('Error al insertar o actualizar el registro:', error);
-        // }
+    async deteleResult(id: number): Promise<void> {
+        try {
+            // Verificar si el registro existe
+            const existingRecord = await Person.findByPk(id);
+    
+            if (!existingRecord) {
+                console.log(`No se encontró un registro con id ${id}.`);
+                return;
+            }
+    
+            // Eliminar el registro
+            const deletedCount = await Person.destroy({
+                where: {
+                    id: id
+                }
+            });
+    
+            // Comprobar si se eliminó el registro
+            if (deletedCount > 0) {
+                console.log(`Registro con id ${id} eliminado correctamente.`);
+            } else {
+                console.log(`No se encontró un registro con id ${id} para eliminar.`);
+            }
+        } catch (error) {
+            console.error('Error al eliminar el registro:', error);
+        }
     }
 }
 

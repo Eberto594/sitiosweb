@@ -6,21 +6,36 @@
 
             {{!-- FORMULARIO --}}
             <div>
-                <form id="age_form" action="/form" method="post">
+                <form id="age_form" action="/form" method="POST">
                     <div class="m-2">
-                        <label class="form-label">Name</label>
+                        <label class="form-label">Nombre</label>
                         <input name="name" class="form-control" value="{{ name }}"/>
+                        <div class="text-danger" id="err_name_required" style="{{ pass validation 'name' 'required' }}">
+                            Escribe tu nombre
+                        </div>
+                        {{!-- <div class="text-danger" id="err_name_minLength" style="{{ pass validation 'name' 'minLength' }}">
+                            Al menos 3 caracteres
+                        </div> --}}
                     </div>
 
                     <div class="m-2">
                         <label class="form-label">Apellido</label>
                         <input name="lastname" class="form-control"value="{{ lastname }}" />
+                        <div class="text-danger" id="err_lastname_required" style="{{ pass validation 'lastname' 'required' }}">
+                            Escribe tu apellido
+                        </div>
                     </div>
 
-                    {{!-- <div class="m-2">
-                        <label class="form-label">Number of Years</label>
-                        <input name="years" class="form-control" value="{{ years }}" />
-                    </div> --}}
+                    <div class="m-2">
+                        <label class="form-label">Telefono</label>
+                        <input name="phone" class="form-control" value="{{ phone }}" />
+                        <div class="text-danger" id="err_phone_required" style="{{ pass validation 'phone' 'required' }}">
+                            Escribe tu telefono
+                        </div>
+                        <div class="text-danger" id="err_phone_exactLength" style="{{ pass validation 'name' 'exactLength' }}">
+                            Deben de ser 10 numeros
+                        </div>
+                    </div>
 
                     <div class="m-2">
                         <button class="btn btn-primary">Submit</button>
@@ -32,7 +47,41 @@
 
         {{!-- HISTORIAL DE REGISTROS ES UNA PLATILLA PARCIAL --}}
         <div class="col-12 m-2">
-            {{> history }}
+            {{!-- {{> history }} --}}
+            <h4>Contactos guardados</h4>
+<ol>
+    {{#unless history}}
+        <li>Sin contactos</li>
+    {{/unless}}
+    {{#each history}}
+        <li>
+
+            <div class="container">
+                <div class="row">
+                    <div class="col-10">
+                        <form id="age_form" action="/editar/{{this.id}}" method="POST">
+                            {{!-- <input type="text" value="{{this.id}}"> --}}
+                            <input name="name"type="text"  value="{{this.name}}">
+                            <input name="lastname" type="text" value="{{this.lastname}}">
+                            <input name="phone" type="text" value="{{this.phone}}">
+                            <button type="submit">Editar</button>
+                        </form> 
+                    </div>
+
+                    <div class="col-1">
+                        <form id="delete-form" action="/borrar/{{this.id}}" method="POST">
+                            <button type="submit" class="btn btn-danger delete-btn" data-id="{{this.id}}">Eliminar</button> <br><br>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            
+
+            
+        </li>
+    {{/each}}
+</ol>
         </div>
     </div>
 </div>
