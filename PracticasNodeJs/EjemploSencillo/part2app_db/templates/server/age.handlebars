@@ -38,7 +38,7 @@
                     </div>
 
                     <div class="m-2">
-                        <button class="btn btn-primary">Submit</button>
+                        <button class="btn btn-primary">Agregar</button>
                     </div>
                 </form>
             </div>
@@ -60,11 +60,23 @@
                 <div class="row">
                     <div class="col-10">
                         <form id="age_form" action="/editar/{{this.id}}" method="POST">
-                            {{!-- <input type="text" value="{{this.id}}"> --}}
-                            <input name="name"type="text"  value="{{this.name}}">
-                            <input name="lastname" type="text" value="{{this.lastname}}">
-                            <input name="phone" type="text" value="{{this.phone}}">
-                            <button type="submit">Editar</button>
+                            <div class="row">
+                                {{!-- <input type="text" value="{{this.id}}"> --}}
+                                <div class="col-3">
+                                    <input name="name"type="text"  value="{{this.name}}">
+                                </div>
+                                <div class="col-3">
+                                    <input name="lastname" type="text" value="{{this.lastname}}">
+                                </div>
+
+                                <div class="col-3">
+                                    <input name="phone" type="text" value="{{this.phone}}">
+                                </div>
+                                
+                                <div class="col-3">
+                                    <button type="submit" class="btn btn-primary">Editar</button>
+                                </div>
+                            </div>
                         </form> 
                     </div>
 

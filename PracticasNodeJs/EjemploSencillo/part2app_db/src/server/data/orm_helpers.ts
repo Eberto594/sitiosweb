@@ -60,8 +60,8 @@ export const addSeedData = async (sequelize: Sequelize) => {
     // Sequelize agrega estas columnas para realizar un seguimiento de 
     // cuándo se crean y modifican las filas de la tabla.
     await sequelize.query(`
-        INSERT INTO People (id, name, lastname, createdAt, updatedAt) VALUES
-        (1, "Alice", "Robles", date(), date()), (2, "Bob", "Gutierrez", date(), date())`);
+        INSERT INTO People (id, name, lastname, phone, createdAt, updatedAt) VALUES
+        (1, "Alice", "Robles", "2225074648",date(), date()), (2, "Bob", "Gutierrez","2221182570", date(), date())`);
 }
 
 // función que transforma los objetos ResultModel proporcionados por 

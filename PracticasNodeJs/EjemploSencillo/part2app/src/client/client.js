@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
             Object.entries(v_result.results).map(([test, valid]) => {
                 const e = document.getElementById(
                     `err_${v_result.propertyName}_${test}`);
+                    console.log(e);
                 e.classList.add("bg-dark-subtle");
                 e.style.display = valid ? "none" : "block";
                 return valid
