@@ -22,7 +22,7 @@ const registerFormRoutes = (app) => {
         resp.render("age", {
             history: await data_1.default.getAllResults(rowLimit),
             // personalHistory: getJsonCookie(req, "personsalHistory")
-            personalHistory: (0, session_helpers_1.getSession)(req).data.personalHistory
+            personalHistory: (0, session_helpers_1.getSession)(req).personalHistory
         });
     });
     app.post("/form", async (req, res) => {

@@ -21,7 +21,7 @@ export const registerFormRoutes = (app: Express) => {
         resp.render("age", {
             history: await repository.getAllResults(rowLimit),
             // personalHistory: getJsonCookie(req, "personsalHistory")
-            personalHistory: getSession(req).data.personalHistory
+            personalHistory: getSession(req).personalHistory
         });
     });
 

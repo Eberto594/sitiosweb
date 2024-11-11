@@ -1,11 +1,11 @@
 import { Request } from "express";
-import { Session } from "./repository";
+// import { Session } from "./repository";
 import session, { SessionData } from "express-session";
 import sessionStore from "connect-session-sequelize";
 import { Sequelize } from "sequelize";
 import { Result } from "../data/repository";
 
-export const getSession = (req: Request): Session => (req as any).session;
+export const getSession = (req: Request): SessionData => (req as any).session;
 
 // La palabra clave declare se usa para indicarle a TypeScript que la 
 // interfaz Request tiene una propiedad adicional
