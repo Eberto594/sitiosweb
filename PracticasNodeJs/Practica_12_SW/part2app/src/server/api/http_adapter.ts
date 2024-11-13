@@ -1,4 +1,5 @@
 import { Express, Response }  from "express";
+import { ValidationError } from "./validation_types";
 
 // La interfaz WebService<T> describe un servicio web 
 // que opera en el tipo T, con métodos que describen 
@@ -88,7 +89,7 @@ export function createAdapter<T>(app:Express, ws:WebService<T>, baseUrl: string)
 
     const writeErrorResponse = (err: any, res: Response) => {
         console.log(err);
-        res.writeHead(500);
+        res.writeHead(err instanceof ValidationError ? 400 : 500);
         res.end();
     }
 }

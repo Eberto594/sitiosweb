@@ -20,7 +20,11 @@ expressApp.set("views", "templates/server");
 expressApp.engine("handlebars", (0, express_handlebars_1.engine)());
 expressApp.set("view engine", "handlebars");
 expressApp.use((0, helmet_1.default)());
-expressApp.use(express_1.default.json());
+// El middleware JSON acepta un objeto de configuración cuya 
+// propiedad type se puede configurar con un arreglo de tipos de contenido para decodificar
+expressApp.use(express_1.default.json({
+    type: ["application/json", "application/json-patch+json"]
+}));
 (0, form_1.registerFormMiddleware)(expressApp);
 (0, form_1.registerFormRoutes)(expressApp);
 (0, api_1.createApi)(expressApp);

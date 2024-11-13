@@ -4,6 +4,8 @@ exports.createApi = void 0;
 // import repository from "../data";
 const http_adapter_1 = require("./http_adapter");
 const results_api_1 = require("./results_api");
+const validation_adapter_1 = require("./validation_adapter");
+const results_api_validation_1 = require("./results_api_validation");
 // Este archivo es solo un marcador de posición por ahora, 
 // pero se usará para configurar Express para que gestione 
 // las solicitudes de la API HTTP
@@ -52,6 +54,7 @@ const results_api_1 = require("./results_api");
 // No hay cambios en el comportamiento del servicio web, pero eliminar el código 
 // que se ocupa de las solicitudes y respuestas HTTP hace que el servicio web sea más fácil de entender y mantener.
 const createApi = (app) => {
-    (0, http_adapter_1.createAdapter)(app, new results_api_1.ResultWebService(), "/api/results");
+    // createAdapter(app, new ResultWebService(), "/api/results");
+    (0, http_adapter_1.createAdapter)(app, new validation_adapter_1.Validator(new results_api_1.ResultWebService(), results_api_validation_1.ResultWebServiceValidation), "/api/results");
 };
 exports.createApi = createApi;

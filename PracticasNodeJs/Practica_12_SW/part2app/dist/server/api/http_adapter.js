@@ -1,6 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createAdapter = void 0;
+const validation_types_1 = require("./validation_types");
 // La función createAdapter<T> crea rutas Express que dependen de los métodos WebService<T> para producir resultados.
 function createAdapter(app, ws, baseUrl) {
     app.get(baseUrl, async (req, res) => {
@@ -68,7 +69,7 @@ function createAdapter(app, ws, baseUrl) {
     });
     const writeErrorResponse = (err, res) => {
         console.log(err);
-        res.writeHead(500);
+        res.writeHead(err instanceof validation_types_1.ValidationError ? 400 : 500);
         res.end();
     };
 }
