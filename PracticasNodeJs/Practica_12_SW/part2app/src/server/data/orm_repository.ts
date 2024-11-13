@@ -1,4 +1,4 @@
-import { Sequelize } from "sequelize";
+import { Sequelize} from "sequelize";
 import { ApiRepository, Result } from "./repository";
 import { addSeedData, defineRelationships, fromOrmModel, initializeModels } from "./orm_helpers";
 import { Calculation, Person, ResultModel } from "./orm_models";
@@ -100,6 +100,46 @@ export class OrmRepository implements ApiRepository {
     async delete(id: number): Promise<boolean> {
         const count = await ResultModel.destroy({where: {id}});
         return count == 1;
+    }
+
+    // Actualizar los datos en el ejemplo significa cambiar el nombre o el cálculo asociado con un resultado.
+    async update(r: Result): Promise<Result | undefined> {
+        const mod = await this.sequelize.transaction(async (transaction) => {
+            // El primer paso es leer los datos que se van a actualizar de la base de datos utilizando la propiedad id del parámetro Result
+            const stored = await ResultModel.findByPk(r.id);
+
+            //Si hay una entrada coincidente en la base de datos, se utiliza
+            //el método findOrCreate para localizar los datos de Person y 
+            //Calculation que coinciden con el parámetro Result o crear 
+            //nuevos datos si no hay coincidencias.
+            if(stored !== null){
+                const [person] = await Person.findOrCreate({
+                    where: {name: r.name}, transaction
+                });
+                const [calculation] = await Calculation.findOrCreate({
+                    where: {
+                        age: r.age,
+                        years: r.years,
+                        nextage: r.nextage,
+                    }, transaction
+                });
+
+                // actualizar los ID para que los datos almacenados hagan 
+                // referencia a los nuevos registros de Persona y Cálculo y 
+                // escribir los cambios en la base de datos, lo que se hace 
+                // utilizando el método save
+                stored.personId = person.id;
+                stored.calculationId = calculation.id;
+                // El método save es lo suficientemente inteligente como para detectar
+                // cambios y solo actualizará la base de datos para las propiedades
+                // cuyos valores hayan cambiado
+                return await stored.save({transaction});
+            }
+        });
+        // El paso final se realiza después de que se haya confirmado
+        // la transacción y devuelve los datos modificados utilizando
+        // el método getResultById
+        return mod? this.getResultById(mod.id): undefined;
     }
 }
 

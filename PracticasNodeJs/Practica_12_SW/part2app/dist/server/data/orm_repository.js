@@ -89,5 +89,42 @@ class OrmRepository {
         const count = await orm_models_1.ResultModel.destroy({ where: { id } });
         return count == 1;
     }
+    // Actualizar los datos en el ejemplo significa cambiar el nombre o el cálculo asociado con un resultado.
+    async update(r) {
+        const mod = await this.sequelize.transaction(async (transaction) => {
+            // El primer paso es leer los datos que se van a actualizar de la base de datos utilizando la propiedad id del parámetro Result
+            const stored = await orm_models_1.ResultModel.findByPk(r.id);
+            //Si hay una entrada coincidente en la base de datos, se utiliza
+            //el método findOrCreate para localizar los datos de Person y 
+            //Calculation que coinciden con el parámetro Result o crear 
+            //nuevos datos si no hay coincidencias.
+            if (stored !== null) {
+                const [person] = await orm_models_1.Person.findOrCreate({
+                    where: { name: r.name }, transaction
+                });
+                const [calculation] = await orm_models_1.Calculation.findOrCreate({
+                    where: {
+                        age: r.age,
+                        years: r.years,
+                        nextage: r.nextage,
+                    }, transaction
+                });
+                // actualizar los ID para que los datos almacenados hagan 
+                // referencia a los nuevos registros de Persona y Cálculo y 
+                // escribir los cambios en la base de datos, lo que se hace 
+                // utilizando el método save
+                stored.personId = person.id;
+                stored.calculationId = calculation.id;
+                // El método save es lo suficientemente inteligente como para detectar
+                // cambios y solo actualizará la base de datos para las propiedades
+                // cuyos valores hayan cambiado
+                return await stored.save({ transaction });
+            }
+        });
+        // El paso final se realiza después de que se haya confirmado
+        // la transacción y devuelve los datos modificados utilizando
+        // el método getResultById
+        return mod ? this.getResultById(mod.id) : undefined;
+    }
 }
 exports.OrmRepository = OrmRepository;

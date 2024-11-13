@@ -31,8 +31,35 @@ export const ops = {
     "Delete": async () => {
         const id = await input({message: "ID?"});
         await sendRequest("DELETE", `/api/results/${id}`);
-    }
-    ,
+    },
+    "Replace": async() => {
+        const id = await input({message: "ID?"});
+        const values = {
+            name: await input({message: "Name?"}),
+            age: await input({message: "Age?"}),
+            years: await input({message: "Years?"}),
+            nextage: await input({message: "Next Age?"})
+        };
+        await sendRequest("PUT", `/api/results/${id}`, values);
+    },
+    "Modify": async () => {
+        const id = await input({message: "ID?"});
+        const value = {
+            name: await input({message: "Name?"}),
+            age: await input({message: "Age?"}),
+            years: await input({message: "Years?"}),
+            nextage: await input({message: "NextAge?"})
+        };
+        // las funciones Object.fromEntries, Object.entries y filter de JavaScript 
+        // se utilizan para excluir cualquier propiedad para la que no se proporciona 
+        // ningún valor, de modo que se envíe una actualización parcial al servicio web.
+        // await sendRequest("PATCH", `/api/results/${id}`, 
+        //     Object.fromEntries(Object.entries(value).filter(([p, v]) => v !== "")));
+        await sendRequest("PATCH", `/api/results/${id}`,
+            Object.entries(values).filter(([p,v]) => v !== "")
+            .map(([p,v]) => ({op: "replace", patch:"/" + p, value:v})),
+            "application/json-patch+json");
+    },
     "Exit": () => process.exit()
 }
 
