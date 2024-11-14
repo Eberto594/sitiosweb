@@ -22,6 +22,15 @@ class OrmAuthStore {
         await this.sequelize.sync();
         await this.storeOrUpdateUser("alice", "mysecret");
         await this.storeOrUpdateUser("bob", "mysecret");
+        // Las nuevas instrucciones en el constructor inicializan los modelos 
+        // de base de datos y agregan los roles de Administradores y Usuarios, 
+        // que se usarán para demostrar el proceso de autorización.
+        await this.storeOrUpdateRole({
+            name: "Users", members: ["alice", "bob"]
+        });
+        await this.storeOrUpdateRole({
+            name: "Admins", members: ["alice"]
+        });
     }
     // El método getUser se implementa utilizando el método }
     // findByPk, que consulta la base de datos utilizando un valor de llave principal
@@ -69,6 +78,64 @@ class OrmAuthStore {
                 resolve(hash);
             });
         });
+    }
+    // El método getRole consulta la base de datos en busca de objetos RoleModel y 
+    // utiliza la opción include para incluir los objetos CredentialsModel asociados
+    //  en los resultados, que se transforman en el resultado Role requerido por la interfaz RoleStore
+    async getRole(name) {
+        const stored = await orm_auth_models_1.RoleModel.findByPk(name, {
+            // La propiedad include está configurada con un objeto cuya propiedad de modelo especifica 
+            // los datos asociados y la propiedad de atributos especifica las propiedades del modelo 
+            // que se completarán en el resultado.
+            include: [{ model: orm_auth_models_1.CredentialsModel, attributes: ["username"] }]
+        });
+        if (stored) {
+            return {
+                name: stored.name,
+                members: stored.CredentialsModels?.map(m => m.username) ?? []
+            };
+        }
+        return null;
+    }
+    // El método findAll se utiliza para consultar todos los objetos RoleModel, 
+    // pero la cláusula where se utiliza para hacer una selección en función de 
+    // los datos asociados de modo que solo se incluyan los objetos RoleModel que 
+    // tengan asociaciones con objetos CredentialsModel cuya propiedad de nombre 
+    // de usuario coincida con un valor determinado. Se utiliza un arreglo de 
+    // atributos vacío para excluir todos los datos de CredentialModel del resultado:
+    async getRolesForUser(username) {
+        return (await orm_auth_models_1.RoleModel.findAll({
+            include: [{
+                    model: orm_auth_models_1.CredentialsModel,
+                    where: { username },
+                    attributes: []
+                }]
+        })).map(rm => rm.name);
+    }
+    // El método storeOrUpdateRole acepta un objeto Role y consulta la base de 
+    // datos para todos los objetos CredentialsModel coincidentes, lo que 
+    // garantiza que se ignore cualquier nombre para el que no haya credenciales de usuario.
+    async storeOrUpdateRole(role) {
+        return await this.sequelize.transaction(async (transaction) => {
+            const users = await orm_auth_models_1.CredentialsModel.findAll({
+                where: { username: { [sequelize_1.Op.in]: role.members } },
+                transaction
+            });
+            // El método findOrCreate garantiza que exista un objeto 
+            // RoleModel en la base de datos, y el método setCredentialsModels
+            //  se utiliza para establecer la membresía del rol. Se utiliza una 
+            //  transacción para garantizar que la actualización se realice de forma atómica
+            const [rm] = await orm_auth_models_1.RoleModel.findOrCreate({
+                where: { name: role.name }, transaction
+            });
+            await rm.setCredentialsModels(users, { transaction });
+            return role;
+        });
+    }
+    // El método validationMembership obtiene los roles a los que se
+    // ha asignado un usuario y verifica que uno de ellos coincida con el rol requerido.
+    async validateMembership(username, rolename) {
+        return (await this.getRolesForUser(username)).includes(rolename);
     }
 }
 exports.OrmAuthStore = OrmAuthStore;

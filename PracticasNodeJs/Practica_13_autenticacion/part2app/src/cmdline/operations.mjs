@@ -4,9 +4,23 @@ import { input } from "@inquirer/prompts";
 // como debería, y una opción de salida que utiliza el método de Node.js process.exit 
 // para finalizar el proceso
 
+let bearer_token;
+
 const baseUrl = "http://localhost:5000";
 
 export const ops = {
+    "Sign In": async () =>{
+        const creds = {
+            username: await input ({message: "Username?"}),
+            password: await input ({message: "Password?"}),
+        };
+
+        const response = await sendRequest("POST", "/api/signin", creds);
+
+        if(response.success == true){
+            bearer_token = response.token;
+        };
+    },
     // "Test": () => {
     //     console.log("Test operation selected");
     // },
@@ -64,14 +78,29 @@ export const ops = {
 }
 
 const sendRequest = async(method, url, body, contentType) => {
-    const response = await fetch(baseUrl + url, {
-        method, headers: {"Content-Type": contentType ?? "application/json"},
-        body: JSON.stringify(body)
-    });
+    // const response = await fetch(baseUrl + url, {
+    //     method, headers: {"Content-Type": contentType ?? "application/json"},
+    //     body: JSON.stringify(body)
+    // });
 
-    if(response.status == 200){
+    // if(response.status == 200){
+    //     const data = await response.json();
+    //     (Array.isArray(data)?data: [data]).forEach(elem => console.log(JSON.stringify(elem)));
+    // }
+    // else{
+    //     console.log(response.status + " " + response.statusText);
+    // }
+    const headers = {"Content-Type": contentType ?? "application/json"};
+    if(bearer_token){
+        headers["Authorization"] = "Bearer " + bearer_token;
+    }
+    const response = await fetch(baseUrl + url, {
+        method, headers, body: JSON.stringify(body)
+    });
+    if(response.status == 200) {
         const data = await response.json();
-        (Array.isArray(data)?data: [data]).forEach(elem => console.log(JSON.stringify(elem)));
+        (Array.isArray(data)? data:[data]).forEach(elem => console.log(JSON.stringify(elem)));
+        return data;
     }
     else{
         console.log(response.status + " " + response.statusText);

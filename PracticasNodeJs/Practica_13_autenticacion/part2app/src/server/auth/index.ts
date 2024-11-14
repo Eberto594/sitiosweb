@@ -1,6 +1,9 @@
-import { Express } from "express";
+import { Express, NextFunction, RequestHandler } from "express";
 import { AuthStore } from "./auth_types";
 import { OrmAuthStore } from "./orm_authstore";
+import jwt from "jsonwebtoken";
+
+const jwt_secret = "mytokensecret";
 
 const store:AuthStore = new OrmAuthStore();
 
@@ -32,6 +35,20 @@ export const createAuth = (app: Express) => {
             req.authenticated = true;
             req.user = {username};
         }
+        else if(req.headers.authorization){
+            let token = req.headers.authorization;
+            if(token.startsWith("Bearer")){
+                token = token.substring(7);
+            }
+            try{
+                const decoded = jwt.verify(token, jwt_secret) as User;
+                req.authenticated = true;
+                req.user = {username: decoded.username};
+            }
+            catch{
+                //do nothing - cannot verify token
+            }
+        }
         else{
             req.authenticated = false
         }
@@ -53,6 +70,7 @@ export const createAuth = (app: Express) => {
         res.render("signin", data)
     })
 
+
     // Cuando se envía una solicitud POST a /signin, se validan las credenciales que 
     // contiene. Se utiliza una redirección para enviar al usuario de vuelta a la 
     // aplicación si las credenciales son válidas.
@@ -70,6 +88,26 @@ export const createAuth = (app: Express) => {
         }
     });
 
+    // La ruta /api/signin se basa en el middleware JSON de Express para analizar los datos 
+    // enviados por el cliente y validar las credenciales del usuario. Si las credenciales 
+    // son válidas, se crea un token,
+    app.post("/api/signin", async(req, res)=> {
+        const username = req.body.username;
+        const password = req.body.password;
+        const result: any = {
+            successs: await store.validateCredentials(username, password)
+        }
+        if(result.successs){
+            // La función sign crea un token, que se firma para evitar la manipulación. 
+            // Los argumentos son los datos que se usarán como carga útil del token, 
+            // un secreto que se usa para firmar el token
+            // un objeto de configuración que se usa para especificar la expiración del token.
+            result.token = jwt.sign({username}, jwt_secret, {expiresIn: "1hr"});
+        }
+        res.json(result);
+        res.end();
+    })
+
     // permite que un usuario cierre la sesión de la aplicación destruyendo la sesión, 
     // llamando al método destroy, que es una característica proporcionada por el 
     // paquete express-session agregado al proyecto en un documento/práctica previa
@@ -78,4 +116,29 @@ export const createAuth = (app: Express) => {
             res.redirect("/");
         })
     })
+
+    app.get("/unauthorized", async (req, res) => {
+        res.render("unauthorized");
+    })
+}
+
+// La función roleGuard acepta un rol y devuelve un componente de middleware 
+// que solo pasará la solicitud al controlador si el usuario ha sido asignado 
+// a ese rol, lo que se verifica mediante el método validationMembership proporcionado por la tienda.
+export const roleGuard = (role: string): RequestHandler<Request, Response, NextFunction> => {
+    return async (req, res, next) => {
+        if(req.authenticated){
+            const username = req.user.username;
+            if(await store.validateMembership(username, role)){
+                next();
+                return;
+            }
+            // Para las solicitudes autenticadas, se redirige al usuario a la URL /unauthorized
+            res.redirect("/unauthorized");
+        }
+        // Si el usuario no ha sido autenticado, se le redirige a la URL /signin, para que pueda autenticarse e intentarlo nuevamente
+        else{
+            res.redirect("/signin");
+        }
+    }
 }
