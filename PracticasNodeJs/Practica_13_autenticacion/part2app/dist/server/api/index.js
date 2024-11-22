@@ -22,6 +22,9 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.createApi = void 0;
 const results_api_1 = require("./results_api");
@@ -31,6 +34,8 @@ const feathers_adapter_1 = require("./feathers_adapter");
 const feathers_1 = require("@feathersjs/feathers");
 const express_1 = __importStar(require("@feathersjs/express"));
 const validation_types_1 = require("./validation_types");
+const auth_1 = require("../auth");
+const passport_1 = __importDefault(require("passport"));
 // Este archivo es solo un marcador de posición por ahora, 
 // pero se usará para configurar Express para que gestione 
 // las solicitudes de la API HTTP
@@ -83,7 +88,17 @@ const createApi = (app) => {
     // createAdapter(app, new Validator(new ResultWebService(), ResultWebServiceValidation), "/api/results");
     const feathersApp = (0, express_1.default)((0, feathers_1.feathers)(), app).configure((0, express_1.rest)());
     const service = new validation_adapter_1.Validator(new results_api_1.ResultWebService(), results_api_validation_1.ResultWebServiceValidation);
-    feathersApp.use('/api/results', new feathers_adapter_1.FeathersWrapper(service));
+    // feathersApp.use('/api/results', new FeathersWrapper(service));
+    // feathersApp.use("/api/results", (req, res, next) => {
+    //     req.feathers.user = req.user;
+    //     req.feathers.authenticated = req.authenticated;
+    //     next();
+    // }, new FeathersWrapper(service));
+    feathersApp.use('/api/results', passport_1.default.authenticate("jwt", { session: false }), (req, res, next) => {
+        req.feathers.user = req.user;
+        req.feathers.authenticated = req.authenticated = req.user !== undefined;
+        next();
+    }, new feathers_adapter_1.FeathersWrapper(service));
     feathersApp.hooks({
         error: {
             all: [(ctx) => {
@@ -92,6 +107,15 @@ const createApi = (app) => {
                         ctx.error = undefined;
                     }
                 }]
+        },
+        // La propiedad before se usa para registrar ganchos que se invocan antes
+        // de que se invoque un método de servicio web, y los métodos create, remove,
+        // update y patch están protegidos por ganchos que requieren el rol Users o Admins
+        before: {
+            create: [(0, auth_1.roleHook)("Users")],
+            remove: [(0, auth_1.roleHook)("Admins")],
+            update: [auth_1.roleHook["Admins"]],
+            patch: [(0, auth_1.roleHook)("Admins")]
         }
     });
 };

@@ -1,14 +1,11 @@
 <form class="m-2">
     <table class="table table-sm table-striped">
         <thead>
-            <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Age</th>
-                <th>Years</th>
-                <th>NextAge</th>
-                <th></th>
-            </tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Years</th>
+            <th>Next Age</th>
         </thead>
         <tbody>
             {{#unless data}}
@@ -16,13 +13,14 @@
                     <td colspan="5">No Data</td>
                 </tr>
             {{/unless}}
+
             {{#each data}}
                 <tr>
-                    <td>{{ this.id }}</td>
-                    <td>{{ this.name }}</td>
-                    <td>{{ this.age }}</td>
-                    <td>{{ this.years }}</td>
-                    <td>{{ this.nextage }}</td>
+                    <td>{{this.id}}</td>
+                    <td>{{this.name}}</td>
+                    <td>{{this.age}}</td>
+                    <td>{{this.years}}</td>
+                    <td>{{this.nextage}}</td>
                     <td>
                         <button class="btn btn-danger btn-sm" formmethod="post" formaction="/form/delete/{{this.id}}">Delete</button>
                     </td>
@@ -30,8 +28,8 @@
             {{/each}}
         </tbody>
     </table>
+
     <button class="btn btn-primary" formmethod="post" formaction="/form/add">Add</button>
-    
     <input type="hidden" name="name" value="Alice">
     <input type="hidden" name="age" value="40">
     <input type="hidden" name="years" value="10">

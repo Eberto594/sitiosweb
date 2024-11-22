@@ -27,11 +27,12 @@ expressApp.use(express_1.default.json({
     type: ["application/json", "application/json-patch+json"]
 }));
 (0, form_1.registerFormMiddleware)(expressApp);
-// El método createAuth se llama después de que se configuran los componentes 
-// de middleware requeridos por los formularios, pero antes del resto de la 
-// aplicación. Esto permite que los controladores de solicitudes de autenticación 
-// dependan de las características descritas anteriormente para los formularios,
-// como la decodificación de datos de formulario y el uso de sesiones.
+// El método createAuth se llama después de que se configuran los 
+// componentes de middleware requeridos por los formularios, pero 
+// antes del resto de la aplicación. Esto permite que los controladores 
+// de solicitudes de autenticación dependan de las características 
+// descritas anteriormente para los formularios, como la decodificación 
+// de datos de formulario y el uso de sesiones.
 (0, auth_1.createAuth)(expressApp);
 (0, form_1.registerFormRoutes)(expressApp);
 (0, api_1.createApi)(expressApp);

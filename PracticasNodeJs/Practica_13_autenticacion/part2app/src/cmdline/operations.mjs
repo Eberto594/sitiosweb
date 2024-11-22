@@ -1,18 +1,22 @@
-import { input } from "@inquirer/prompts";
+import { input, password } from "@inquirer/prompts";
 // Este archivo proporciona las operaciones que el usuario puede seleccionar, 
 // con una operación de prueba para comenzar y asegurarse de que todo funciona 
 // como debería, y una opción de salida que utiliza el método de Node.js process.exit 
 // para finalizar el proceso
 
-let bearer_token;
-
 const baseUrl = "http://localhost:5000";
 
+let bearer_token;
+
 export const ops = {
-    "Sign In": async () =>{
+    // "Test": () => {
+    //     console.log("Test operation selected");
+    // },
+    // "Exit": () => process.exit()
+    "Sign In": async () => {
         const creds = {
-            username: await input ({message: "Username?"}),
-            password: await input ({message: "Password?"}),
+            username: await input({message: "Username?"}),
+            password: await input({message: "Password?"}),
         };
 
         const response = await sendRequest("POST", "/api/signin", creds);
@@ -20,11 +24,11 @@ export const ops = {
         if(response.success == true){
             bearer_token = response.token;
         };
+
     },
-    // "Test": () => {
-    //     console.log("Test operation selected");
-    // },
-    // "Exit": () => process.exit()
+    "Sign Out": () => {
+        bearer_token = undefined
+    },
     "Get All": () => sendRequest("GET", "/api/results"),
     "Get Name": async () => {
         const name = await input({message: "Name?"});
@@ -90,19 +94,21 @@ const sendRequest = async(method, url, body, contentType) => {
     // else{
     //     console.log(response.status + " " + response.statusText);
     // }
-    const headers = {"Content-Type": contentType ?? "application/json"};
+    const headers = { "Content-Type": contentType?? "application/json"};
     if(bearer_token){
-        headers["Authorization"] = "Bearer " + bearer_token;
+        headers["Authorization"] = "Bearer" + bearer_token;
     }
+
     const response = await fetch(baseUrl + url, {
         method, headers, body: JSON.stringify(body)
     });
-    if(response.status == 200) {
+
+    if(response.status == 200){
         const data = await response.json();
-        (Array.isArray(data)? data:[data]).forEach(elem => console.log(JSON.stringify(elem)));
+        (Array.isArray(data) ? data: [data]).forEach(elem => console.log(JSON.stringify(elem)));
         return data;
     }
     else{
-        console.log(response.status + " " + response.statusText);
+        console.log(response.status + "" + response.statusText);
     }
 }

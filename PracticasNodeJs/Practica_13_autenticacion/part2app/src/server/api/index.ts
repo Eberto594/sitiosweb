@@ -8,6 +8,8 @@ import { FeathersWrapper } from "./feathers_adapter";
 import { feathers } from "@feathersjs/feathers";
 import feathersExpress, { rest } from "@feathersjs/express";
 import { ValidationError } from "./validation_types";
+import { roleHook } from "../auth";
+import passport from "passport";
 
 
 // Este archivo es solo un marcador de posición por ahora, 
@@ -69,7 +71,19 @@ export const createApi = (app: Express) => {
 
     const service = new Validator(new ResultWebService(), ResultWebServiceValidation);
 
-    feathersApp.use('/api/results', new FeathersWrapper(service));
+    // feathersApp.use('/api/results', new FeathersWrapper(service));
+    // feathersApp.use("/api/results", (req, res, next) => {
+    //     req.feathers.user = req.user;
+    //     req.feathers.authenticated = req.authenticated;
+    //     next();
+    // }, new FeathersWrapper(service));
+    
+    feathersApp.use('/api/results', passport.authenticate("jwt", {session: false}), (req, res, next) => {
+        req.feathers.user = req.user;
+        req.feathers.authenticated = req.authenticated = req.user !== undefined;
+        next();
+    }, new FeathersWrapper(service));
+
     feathersApp.hooks({
         error: {
             all: [(ctx) => {
@@ -78,6 +92,15 @@ export const createApi = (app: Express) => {
                     ctx.error = undefined;
                 }
             }]
+        },
+        // La propiedad before se usa para registrar ganchos que se invocan antes
+        // de que se invoque un método de servicio web, y los métodos create, remove,
+        // update y patch están protegidos por ganchos que requieren el rol Users o Admins
+        before: {
+            create: [roleHook("Users")],
+            remove:[roleHook("Admins")],
+            update: [roleHook["Admins"]],
+            patch: [roleHook("Admins")]
         }
     });
 }
