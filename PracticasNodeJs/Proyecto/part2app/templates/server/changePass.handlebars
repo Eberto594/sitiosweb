@@ -1,0 +1,41 @@
+{{!-- La plantilla contiene un formulario para enviar un nombre de usuario y 
+una contraseña a la aplicación, junto con un mensaje de error que 
+está oculto de manera predeterminada, pero que se mostrará 
+si el usuario proporciona credenciales no válidas. --}}
+
+<link rel="stylesheet" href="css/bootstrap.min.css"/>
+{{#if failed}}
+    <h4 class="bg-danger text-white p-2 text-cener">
+        Las contrasenas no pueden coincidir. Vuelve a intentarlo
+    </h4>
+{{/if}}
+
+{{#if empty}}
+    <h4 class="bg-danger text-white p-2 text-cener">
+        Llena todos los campos correctamente
+    </h4>
+{{/if}}
+
+<div class="row">
+    <div class="col-lg-4">
+        <a href="/" class="btn btn-secondary m-2">Back</a>
+    </div>
+    <div class="col-lg-4">
+        <h4>Cambiar contraseña</h4>
+        <form method="post">
+            <div class="m-2">
+                <label class="from-label">Contraseña actual</label>
+                <input name="currentPassword" type="Password" class="form-control" value="{{password}}">
+            </div>
+
+            <div class="m-2">
+                <label class="form-label">Nueva contraseña</label>
+                <input type="password" name="newPassword" class="form-control" value="{{password}}">
+            </div>
+
+            <button type="submit" class="btn btn-primary mx-2">Cambiar contraseña</button>
+        </form>
+
+    </div>
+    <div class="col-lg-4"></div>
+</div>

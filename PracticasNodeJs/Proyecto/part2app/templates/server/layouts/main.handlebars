@@ -1,0 +1,34 @@
+{{!-- Los valores de datos locales se utilizan de la misma forma que los datos de 
+contexto de plantilla habituales, y las adiciones a la plantilla muestran 
+el nombre del usuario y un botón de cierre de sesión si la solicitud se 
+ha autenticado. Si la solicitud no se ha autenticado, la plantilla 
+muestra un botón de inicio de sesión, a menos que se configure 
+la propiedad signinpage, en cuyo caso no se muestra ningún contenido nuevo. --}}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/bundle.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+</head>
+<body>
+    {{#if authenticated}}
+        <div class="bg-primary text-white p-1 clearfix">
+            <form method="post" action="/signout">
+                <span class="h5">Usuario: {{user.username}}</span>
+                <button class="btn btn-secondary btn-sm float-end ms-3" type="submit">Cerrar Sesion</button>
+                <a href="/changePass" class="btn btn-secondary btn-sm float-end">Cambiar contraseña</a>&nbsp;
+            </form>
+        </div>
+    {{else}}
+
+    {{#unless signinpage}}
+        <div class="bg-primary text-white p-1 clearfix">
+            <a href="/signin" class="btn btn-secondary btn-sm float-end">Iniciar Sesion</a>
+        </div>
+    {{/unless}}
+    {{/if}}
+
+    {{{body}}}
+</body>
+</html>
