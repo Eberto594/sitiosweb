@@ -14,6 +14,14 @@ export interface Result {
     nextage: number
 }
 
+export interface MateriaResult {
+    id: number,
+    nombre: string,
+    nivel: string,
+    area: string,
+    creditos: number
+}
+
 // La interfaz Repository define métodos para almacenar nuevos objetos Result, 
 // consultar todos los resultados y los resultados que tienen un nombre específico.
 export interface Repository {
@@ -27,4 +35,5 @@ export interface ApiRepository extends Repository {
     getResultById(id: number): Promise<Result | undefined>;
     delete(id:number): Promise<boolean>;
     update(r: Result): Promise<Result | undefined>;
+    getMaterias(limit: number): Promise<MateriaResult[]>;
 }

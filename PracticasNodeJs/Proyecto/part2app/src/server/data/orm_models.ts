@@ -30,3 +30,33 @@ export class ResultModel extends Model<InferAttributes<ResultModel>, InferCreati
     declare Person?: InferAttributes<Person>;
     declare Calculation?: InferAttributes<Calculation>;
 }
+
+export class MateriaModel extends Model<InferAttributes<MateriaModel>, InferCreationAttributes<MateriaModel>> {
+    declare id?: CreationOptional<number>;
+    declare nombre: string;    
+    declare nivel: string;
+    declare area: string;
+    declare creditos: number;
+}
+
+export class Alumno extends Model<InferAttributes<Alumno>, InferCreationAttributes<Alumno>> {
+    declare id?: CreationOptional<number>;
+    declare periodoAct: number;
+    declare matricula: string;
+    declare apellidoPa: string;
+    declare apellidoMa: string;
+    declare nombre: string;
+    declare contraseña: string;
+    
+}
+
+export class ControlMateria extends Model<InferAttributes<ControlMateria>, InferCreationAttributes<ControlMateria>> {
+    declare id?: CreationOptional<number>;
+    declare idAlumno: ForeignKey<Alumno["id"]>;
+    declare idMateria: ForeignKey<MateriaModel["id"]>;
+    declare estado: string;
+    declare Alumno?: InferAttributes<Alumno>;
+    declare MateriaModel?: InferAttributes<MateriaModel>;
+    declare periodo: number;
+    declare semestre: string;
+}

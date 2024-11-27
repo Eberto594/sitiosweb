@@ -1,37 +1,44 @@
-{{!-- <form class="m-2">
-    <table class="table table-sm table-striped">
-        <thead>
-            <th>ID</th>
-            <th>Name</th>
-            <th>Age</th>
-            <th>Years</th>
-            <th>Next Age</th>
-        </thead>
-        <tbody>
-            {{#unless data}}
-                <tr>
-                    <td colspan="5">No Data</td>
-                </tr>
-            {{/unless}}
+<div class="col-lg-6">
+    <form class="m-2">
+        <div style="max-height: 400px; overflow-y: auto;">
+            <table class="table table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Nivel</th>
+                        <th>Area</th>
+                        <th>Creditos</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {{#unless data}}
+                    <tr>
+                        <td colspan="5">No Data</td>
+                    </tr>
+                    {{/unless}}
+                    {{#each data}}
+                    <tr>
+                        <td>{{this.id}}</td>
+                        <td>{{this.nombre}}</td>
+                        <td>{{this.nivel}}</td>
+                        <td>{{this.area}}</td>
+                        <td>{{this.creditos}}</td>
+                    </tr>
+                    {{/each}}
+                </tbody>
+            </table>
+        </div>
 
-            {{#each data}}
-                <tr>
-                    <td>{{this.id}}</td>
-                    <td>{{this.name}}</td>
-                    <td>{{this.age}}</td>
-                    <td>{{this.years}}</td>
-                    <td>{{this.nextage}}</td>
-                    <td>
-                        <button class="btn btn-danger btn-sm" formmethod="post" formaction="/form/delete/{{this.id}}">Delete</button>
-                    </td>
-                </tr>
-            {{/each}}
-        </tbody>
-    </table>
+    
+        <button class="btn btn-primary" formmethod="post" formaction="/form/add">Add</button>
+        <input type="hidden" name="name" value="Alice">
+        <input type="hidden" name="age" value="40">
+        <input type="hidden" name="years" value="10">
+    </form>
+    {{!-- <img src="/images/mantenimiento.gif" alt="Servicio en mantenimiento"> --}}
+</div>
 
-    <button class="btn btn-primary" formmethod="post" formaction="/form/add">Add</button>
-    <input type="hidden" name="name" value="Alice">
-    <input type="hidden" name="age" value="40">
-    <input type="hidden" name="years" value="10">
-</form> --}}
-<img src="/images/mantenimiento.gif" alt="Servicio en mantenimiento">
+<div class="col-lg-6">
+
+</div>

@@ -1,7 +1,7 @@
 import { Sequelize} from "sequelize";
-import { ApiRepository, Result } from "./repository";
-import { addSeedData, defineRelationships, fromOrmModel, initializeModels } from "./orm_helpers";
-import { Calculation, Person, ResultModel } from "./orm_models";
+import { ApiRepository, MateriaResult, Result } from "./repository";
+import { addSeedData, defineRelationships, fromMaterialModel, fromOrmModel, initializeModels } from "./orm_helpers";
+import { Calculation, MateriaModel, Person, ResultModel } from "./orm_models";
 
 export class OrmRepository implements ApiRepository {
     sequelize: Sequelize;
@@ -90,6 +90,15 @@ export class OrmRepository implements ApiRepository {
             })).map(row => fromOrmModel(row));
     }
 
+    
+    async getMaterias(limit: number): Promise<MateriaResult[]> {
+        return (
+            await MateriaModel.findAll({
+                limit,
+                order: [["id", "ASC"]]
+            })).map(row => fromMaterialModel(row));
+    }
+
     async getResultById(id: number): Promise<Result | undefined> {
         const model = await ResultModel.findByPk(id, {
             include: [Person, Calculation]
@@ -98,7 +107,8 @@ export class OrmRepository implements ApiRepository {
     }
 
     async delete(id: number): Promise<boolean> {
-        const count = await ResultModel.destroy({where: {id}});
+        // const count = await ResultModel.destroy({where: {id}});
+        const count = await MateriaModel.destroy({where: {id}});
         return count == 1;
     }
 
@@ -141,6 +151,7 @@ export class OrmRepository implements ApiRepository {
         // el método getResultById
         return mod? this.getResultById(mod.id): undefined;
     }
+
 }
 
 

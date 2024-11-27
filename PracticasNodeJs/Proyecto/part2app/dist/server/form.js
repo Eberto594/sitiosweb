@@ -9,7 +9,7 @@ const data_1 = __importDefault(require("./data"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const session_helpers_1 = require("./sessions/session_helpers");
 const auth_1 = require("./auth");
-const rowLimit = 10;
+const rowLimit = 50;
 const registerFormMiddleware = (app) => {
     app.use(express_1.default.urlencoded({ extended: true }));
     // habilita el middleware de análisis de cookies y especifica la llave secreta que se utilizará para las cookies firmadas.
@@ -20,9 +20,12 @@ const registerFormMiddleware = (app) => {
 exports.registerFormMiddleware = registerFormMiddleware;
 const registerFormRoutes = (app) => {
     app.get("/form", async (req, resp) => {
+        let nombreAlumno = resp.locals.user;
         resp.render("data", {
-            data: await data_1.default.getAllResults(rowLimit),
+            // data: await repository.getAllResults(rowLimit),
+            data: await data_1.default.getMaterias(rowLimit)
         });
+        console.log(resp.locals.user);
     });
     // la ruta /form/delete/:id está restringida al rol Administradores (Admins).
     app.post("/form/delete/:id", (0, auth_1.roleGuard)("Admins"), async (req, res) => {

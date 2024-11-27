@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.ResultModel = exports.Calculation = exports.Person = void 0;
+exports.ControlMateria = exports.Alumno = exports.MateriaModel = exports.ResultModel = exports.Calculation = exports.Person = void 0;
 const sequelize_1 = require("sequelize");
 //El primer paso es definir las clases que representarán los datos en la base de datos
 // Sequelize utilizará cada clase para crear una tabla de base de datos 
@@ -17,3 +17,12 @@ exports.Calculation = Calculation;
 class ResultModel extends sequelize_1.Model {
 }
 exports.ResultModel = ResultModel;
+class MateriaModel extends sequelize_1.Model {
+}
+exports.MateriaModel = MateriaModel;
+class Alumno extends sequelize_1.Model {
+}
+exports.Alumno = Alumno;
+class ControlMateria extends sequelize_1.Model {
+}
+exports.ControlMateria = ControlMateria;

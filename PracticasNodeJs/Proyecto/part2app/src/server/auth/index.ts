@@ -51,44 +51,6 @@ export const createAuth = (app: Express) => {
     
     configurePassport({store, jwt_secret});
 
-    // app.use((req, res, next) => {
-    //     const username = req.session.username;
-    //     if(username){
-    //         req.authenticated = true;
-    //         req.user = { username};
-    //     }
-    //     else if(req.headers.authorization){
-    //         let token = req.headers.authorization;
-    //         // El middleware de autenticación verifica si la solicitud incluye el encabezado de Authorization y, 
-    //         // si lo incluye, verifica su valor como token. La verificación checa la firma para garantizar que la 
-    //         // arga útil no haya sido alterada y garantiza que el token no haya expirado. El nombre de usuario se 
-    //         // lee de la carga útil del token y se usa para autenticar la solicitud.
-    //         if(token.startsWith("Bearer")){
-    //             token = token.substring(7);
-    //         }
-    //         try{
-    //             const deconded = jwt.verify(token, jwt_secret) as User;
-    //             req.authenticated = true;
-    //             req.user = { username: deconded.username};
-    //         }
-    //         catch{
-    //             //do nothing - cannot verify token
-    //         }
-    //     }
-    //     else{
-    //         req.authenticated = false;
-    //     }
-    //     // crean valores de datos locales denominados user y authenticated, 
-    //     // lo que significa que esta información estará disponible para cualquier 
-    //     // plantilla que se ejecute mediante una solicitud/respuesta que haya sido 
-    //     // procesada por este middleware
-    //     res.locals.user = req.user;
-    //     res.locals.authenticated = req.authenticated;
-    //     next();
-    // })
-
-
-
     // El contenido de la plantilla de inicio de sesión se procesa cuando se envía una 
     // solicitud GET a /signin.
     app.get("/signin", (req, res) => {
@@ -101,24 +63,12 @@ export const createAuth = (app: Express) => {
         res.render("signin", data);
     })
 
-    // Cuando se envía una solicitud POST a /signin, 
-    // se validan las credenciales que contiene. Se utiliza una redirección para 
-    // enviar al usuario de vuelta a la aplicación si las credenciales son válidas
-    // app.post("/signin", async(req, res) => {
-    //     // Cuando se validan las credenciales del usuario, la propiedad de nombre de 
-    //     // usuario agregada a la interfaz SessionData se utiliza para almacenar el nombre de usuario
-    //     const username = req.body.username;
-    //     const password = req.body.password;
-    //     const valid = await store.validateCredentials(username, password);
-    //     if(valid){
-    //         req.session.username = username;
-    //         res.redirect("/");
-    //     }
-    //     // Este es un patrón conocido como Post/Redirect/Get, y garantiza que 
-    //     // el usuario pueda volver a cargar el navegador sin activar otro intento de inicio de sesión.
-    //     else{
-    //         res.redirect(`/signin?username=${username}&password=${password}&failed=1`);
-    //     }
+    // app.get("/profile", (req, res) => {
+    //     console.log(req.user?.username);
+    //     const data:any = {
+    //         // info: await store.getUser()
+    //     // }
+    //     // res.render("profile", data);
     // })
 
     // Passport proporciona sus propias adiciones al objeto Express Request, por lo que se requieren 
@@ -204,7 +154,7 @@ export const createAuth = (app: Express) => {
         store.updatePassword(username, newPassword);
 
         res.redirect('/');
-    })
+    }) 
     
 
     app.get("/unauthorized", async(req, res)=> {

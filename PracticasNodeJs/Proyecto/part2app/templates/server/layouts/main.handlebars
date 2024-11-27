@@ -17,9 +17,11 @@ la propiedad signinpage, en cuyo caso no se muestra ningún contenido nuevo. --}
             <form method="post" action="/signout">
                 <span class="h5">Usuario: {{user.username}}</span>
                 <button class="btn btn-secondary btn-sm float-end ms-3" type="submit">Cerrar Sesion</button>
-                <a href="/changePass" class="btn btn-secondary btn-sm float-end">Cambiar contraseña</a>&nbsp;
+                <a href="/changePass" class="btn btn-secondary btn-sm float-end">Cambiar contraseña</a>&nbsp;&nbsp;
+                <a href="/profile" class="btn btn-secondary btn-sm float-end">Mi perfil</a>&nbsp;&nbsp;
             </form>
         </div>
+        
     {{else}}
 
     {{#unless signinpage}}

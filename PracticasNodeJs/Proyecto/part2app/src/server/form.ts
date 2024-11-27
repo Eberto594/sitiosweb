@@ -5,7 +5,7 @@ import { sessionMiddleWare } from "./sessions/session_helpers";
 import { roleGuard } from "./auth";
 import { Result } from "./data/repository";
 
-const rowLimit = 10;
+const rowLimit = 50;
 
 export const registerFormMiddleware = (app: Express) => {
     app.use(express.urlencoded({extended: true}));
@@ -18,9 +18,12 @@ export const registerFormMiddleware = (app: Express) => {
 export const registerFormRoutes = (app: Express) => {
 
     app.get("/form", async (req, resp) => {
+        let nombreAlumno = resp.locals.user;
         resp.render("data", {
-            data: await repository.getAllResults(rowLimit),
+            // data: await repository.getAllResults(rowLimit),
+            data: await repository.getMaterias(rowLimit)
         });
+        console.log(resp.locals.user);
     });
 
     // la ruta /form/delete/:id está restringida al rol Administradores (Admins).

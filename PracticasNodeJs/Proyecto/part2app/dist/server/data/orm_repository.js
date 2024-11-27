@@ -79,6 +79,12 @@ class OrmRepository {
             limit, order: [["id", "DESC"]]
         })).map(row => (0, orm_helpers_1.fromOrmModel)(row));
     }
+    async getMaterias(limit) {
+        return (await orm_models_1.MateriaModel.findAll({
+            limit,
+            order: [["id", "ASC"]]
+        })).map(row => (0, orm_helpers_1.fromMaterialModel)(row));
+    }
     async getResultById(id) {
         const model = await orm_models_1.ResultModel.findByPk(id, {
             include: [orm_models_1.Person, orm_models_1.Calculation]
@@ -86,7 +92,8 @@ class OrmRepository {
         return model ? (0, orm_helpers_1.fromOrmModel)(model) : undefined;
     }
     async delete(id) {
-        const count = await orm_models_1.ResultModel.destroy({ where: { id } });
+        // const count = await ResultModel.destroy({where: {id}});
+        const count = await orm_models_1.MateriaModel.destroy({ where: { id } });
         return count == 1;
     }
     // Actualizar los datos en el ejemplo significa cambiar el nombre o el cálculo asociado con un resultado.
