@@ -9,7 +9,7 @@ const data_1 = __importDefault(require("./data"));
 const cookie_parser_1 = __importDefault(require("cookie-parser"));
 const session_helpers_1 = require("./sessions/session_helpers");
 const auth_1 = require("./auth");
-const rowLimit = 50;
+const rowLimit = 69;
 const registerFormMiddleware = (app) => {
     app.use(express_1.default.urlencoded({ extended: true }));
     // habilita el middleware de análisis de cookies y especifica la llave secreta que se utilizará para las cookies firmadas.
@@ -20,6 +20,9 @@ const registerFormMiddleware = (app) => {
 exports.registerFormMiddleware = registerFormMiddleware;
 const registerFormRoutes = (app) => {
     app.get("/form", async (req, resp) => {
+        if (!resp.locals.user) {
+            return resp.redirect("/signin");
+        }
         let nombreAlumno = resp.locals.user;
         resp.render("data", {
             // data: await repository.getAllResults(rowLimit),

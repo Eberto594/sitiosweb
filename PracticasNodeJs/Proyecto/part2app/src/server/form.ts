@@ -5,7 +5,7 @@ import { sessionMiddleWare } from "./sessions/session_helpers";
 import { roleGuard } from "./auth";
 import { Result } from "./data/repository";
 
-const rowLimit = 50;
+const rowLimit = 69;
 
 export const registerFormMiddleware = (app: Express) => {
     app.use(express.urlencoded({extended: true}));
@@ -18,6 +18,11 @@ export const registerFormMiddleware = (app: Express) => {
 export const registerFormRoutes = (app: Express) => {
 
     app.get("/form", async (req, resp) => {
+
+        if(!resp.locals.user){
+            return resp.redirect("/signin");
+        }
+
         let nombreAlumno = resp.locals.user;
         resp.render("data", {
             // data: await repository.getAllResults(rowLimit),

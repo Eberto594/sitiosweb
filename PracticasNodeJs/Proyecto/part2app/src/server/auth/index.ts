@@ -63,13 +63,10 @@ export const createAuth = (app: Express) => {
         res.render("signin", data);
     })
 
-    // app.get("/profile", (req, res) => {
-    //     console.log(req.user?.username);
-    //     const data:any = {
-    //         // info: await store.getUser()
-    //     // }
-    //     // res.render("profile", data);
-    // })
+    app.get("/profile", (req, res) => {
+        console.log(req.user?.username);
+        res.render("profile");
+    })
 
     // Passport proporciona sus propias adiciones al objeto Express Request, por lo que se requieren 
     // ajustes para evitar conflictos. La función authenticate de Passport se utiliza dos veces. Cuando 

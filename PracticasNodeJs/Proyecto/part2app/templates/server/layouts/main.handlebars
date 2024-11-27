@@ -14,13 +14,16 @@ la propiedad signinpage, en cuyo caso no se muestra ningún contenido nuevo. --}
 <body>
     {{#if authenticated}}
         <div class="bg-primary text-white p-1 clearfix">
-            <form method="post" action="/signout">
+            {{!-- <form method="post" action="/signout">
                 <span class="h5">Usuario: {{user.username}}</span>
-                <button class="btn btn-secondary btn-sm float-end ms-3" type="submit">Cerrar Sesion</button>
-                <a href="/changePass" class="btn btn-secondary btn-sm float-end">Cambiar contraseña</a>&nbsp;&nbsp;
-                <a href="/profile" class="btn btn-secondary btn-sm float-end">Mi perfil</a>&nbsp;&nbsp;
-            </form>
+                <button class="btn btn-secondary btn-sm float-end" type="submit">Cerrar Sesion</button>
+            </form> --}}
+            <button class="btn btn-primary btn-sm" formmethod="post" formaction="/form/delete/{{this.id}}">Delete</button>
+            <button class="btn btn-primary btn-sm" formmethod="post" formaction="/signout">Cerrar Sesiso</button>
+                    <a href="/changePass" class="btn btn-secondary btn-sm float-end">Cambiar contraseña</a>&nbsp;&nbsp;
+        <a href="/profile" class="btn btn-secondary btn-sm float-end">Mi perfil</a>&nbsp;&nbsp;
         </div>
+
         
     {{else}}
 
