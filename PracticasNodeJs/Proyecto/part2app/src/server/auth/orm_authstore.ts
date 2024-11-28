@@ -2,21 +2,24 @@ import { Sequelize, Op } from "sequelize";
 import { CredentialsModel, initilizeAuthModels, RoleModel } from "./orm_auth_models";
 import { AuthStore, Role } from "./auth_types";
 import { pbkdf2, randomBytes, timingSafeEqual } from "crypto";
+import { OrmRepository} from "../data/orm_repository"
 
 // La clase OrmAuthStore implementa la interfaz AuthStore utilizando las 
 // características Sequelize presentadas por la clase CredentialsModel
 export class OrmAuthStore implements AuthStore {
     sequelize: Sequelize;
-
+    // ormRepository = new OrmRepository();
 
     constructor(){
         this.sequelize = new Sequelize({
             dialect: "sqlite",
-            storage: "orm_auth.db",
+            // storage: "orm_auth.db",
+            storage: "orm_age.db",
             logging: console.log,
             logQueryParameters: true
         });
         this.initModelAndDatabase();
+        
     }
 
     async initModelAndDatabase(): Promise<void> {
@@ -36,6 +39,9 @@ export class OrmAuthStore implements AuthStore {
             name: "Admins",
             members: ["alice", "alberto", "eber"]
         })
+
+        // let usuarios = await this.ormRepository.getUser("montserrat");
+        // console.log(usuarios);
     }
 
     // El método getUser se implementa utilizando el método findByPk, que 

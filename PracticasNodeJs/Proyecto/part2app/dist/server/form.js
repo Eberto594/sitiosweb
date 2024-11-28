@@ -28,7 +28,8 @@ const registerFormRoutes = (app) => {
             // data: await repository.getAllResults(rowLimit),
             data: await data_1.default.getMaterias(rowLimit)
         });
-        console.log(resp.locals.user);
+        // console.log(resp.locals.user);
+        // console.log(await repository.getUsuarios(rowLimit))
     });
     // la ruta /form/delete/:id está restringida al rol Administradores (Admins).
     app.post("/form/delete/:id", (0, auth_1.roleGuard)("Admins"), async (req, res) => {
@@ -44,29 +45,5 @@ const registerFormRoutes = (app) => {
         res.redirect("/form");
         res.end();
     });
-    // app.post("/form", async (req, res) => {
-    //     const nextage = Number.parseInt(req.body.age) + Number.parseInt(req.body.years);
-    //     await repository.saveResult({...req.body, nextage});
-    //     // let pHistory = [{
-    //     //     name: req.body.name,
-    //     //     age: req.body.age,
-    //     //     years: req.body.years,
-    //     //     nextage},
-    //     //     ...(getJsonCookie(req, "personalHistory") || [])
-    //     // ].splice(0,5);
-    //     // setJsonCookie(res, "personalHistory", pHistory);
-    //     req.session.personalHistory = [{
-    //         id: 0, name: req.body.name, age: req.body.age,
-    //         years: req.body.years, nextage},
-    //         ...(req.session.personalHistory || [])].splice(0, 5);
-    //         const context = {
-    //             ...req.body, nextage,
-    //             history: await repository.getAllResults(rowLimit),
-    //             personalHistory: req.session.personalHistory
-    //             };
-    //         // Los resultados se pasan a la plantilla mediante una propiedad 
-    //         // denominada history, que se utiliza para rellenar la tabla
-    //         res.render("age", context);
-    // });
 };
 exports.registerFormRoutes = registerFormRoutes;

@@ -24,9 +24,12 @@ const createAuth = (app) => {
         };
         res.render("signin", data);
     });
-    app.get("/profile", (req, res) => {
+    app.get("/profile", passport_1.default.authenticate("session"), (req, res) => {
         console.log(req.user?.username);
-        res.render("profile");
+        res.render("profile", {
+            user: req.user?.username,
+            layout: false
+        });
     });
     // Passport proporciona sus propias adiciones al objeto Express Request, por lo que se requieren 
     // ajustes para evitar conflictos. La función authenticate de Passport se utiliza dos veces. Cuando 
@@ -70,12 +73,13 @@ const createAuth = (app) => {
             res.redirect("/signin");
         });
     });
-    app.get('/changePass', async (req, res) => {
+    app.get('/changePass', passport_1.default.authenticate("session"), async (req, res) => {
         res.render('changePass', {
             failed: false,
             password: '',
             layout: false // Esto evita incluir la plantilla principal
         });
+        console.log(req.user?.username);
     });
     app.post("/changePass", async (req, res) => {
         const username = req.user?.username;

@@ -63,9 +63,12 @@ export const createAuth = (app: Express) => {
         res.render("signin", data);
     })
 
-    app.get("/profile", (req, res) => {
+    app.get("/profile",passport.authenticate("session"), (req, res) => {
         console.log(req.user?.username);
-        res.render("profile");
+        res.render("profile", {
+            user: req.user?.username,
+            layout: false
+        });
     })
 
     // Passport proporciona sus propias adiciones al objeto Express Request, por lo que se requieren 
@@ -114,12 +117,13 @@ export const createAuth = (app: Express) => {
         })
     })
 
-    app.get('/changePass', async (req, res) => {
+    app.get('/changePass', passport.authenticate("session"), async (req, res) => {
         res.render('changePass', {
             failed: false,
             password: '',
             layout: false // Esto evita incluir la plantilla principal
         });
+        console.log(req.user?.username);
     });
 
     app.post("/changePass", async(req, res) => {

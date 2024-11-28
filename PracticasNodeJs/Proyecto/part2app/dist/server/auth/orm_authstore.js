@@ -8,10 +8,12 @@ const crypto_1 = require("crypto");
 // características Sequelize presentadas por la clase CredentialsModel
 class OrmAuthStore {
     sequelize;
+    // ormRepository = new OrmRepository();
     constructor() {
         this.sequelize = new sequelize_1.Sequelize({
             dialect: "sqlite",
-            storage: "orm_auth.db",
+            // storage: "orm_auth.db",
+            storage: "orm_age.db",
             logging: console.log,
             logQueryParameters: true
         });
@@ -34,6 +36,8 @@ class OrmAuthStore {
             name: "Admins",
             members: ["alice", "alberto", "eber"]
         });
+        // let usuarios = await this.ormRepository.getUser("montserrat");
+        // console.log(usuarios);
     }
     // El método getUser se implementa utilizando el método findByPk, que 
     // consulta la base de datos utilizando un valor de llave principal.
