@@ -1,0 +1,91 @@
+ /*+dark- #03254c #1167b1 #187bcd 	#2a9df4 */
+ .navbar-custom {
+     background-color: #03254c;
+     /* Azul oscuro personalizado */
+     color: white;
+     /* Texto en blanco */
+ }
+
+ .navbar-custom .nav-link {
+     color: white;
+     /* Color del texto en los enlaces */
+ }
+
+ .navbar-custom .nav-link:hover {
+     text-decoration: underline;
+     /* Efecto de subrayado al pasar el cursor */
+ }
+
+ main {
+     flex: 1;
+     /* Empuja el footer hacia abajo */
+     padding-bottom: 60px;
+     /* Ajusta el valor según el tamaño del footer */
+ }
+
+ /* Estilo general para el fondo del formulario */
+ form {
+     margin-bottom: 15px;
+ }
+
+ .shadow-lg {
+     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+ }
+
+ /* Botones personalizados */
+ .btn-primary {
+     background-color: #1167b1;
+     border-color: #1167b1;
+ }
+
+ .btn-primary:hover {
+     background-color: #187bcd;
+     border-color: #187bcd;
+ }
+
+ .btn-secondary {
+     background-color: #2a9df4;
+     border-color: #2a9df4;
+ }
+
+ .btn-secondary:hover {
+     background-color: #187bcd;
+     border-color: #187bcd;
+ }
+
+ /* Input fields */
+ .form-control-lg {
+     font-size: 1.25rem;
+     padding: 0.5rem 1rem;
+ }
+
+ /* Error message styling */
+ .bg-danger {
+     margin-bottom: 20px;
+     font-weight: bold;
+ }
+
+ /* Container alignment */
+ .vh-100 {
+     min-height: 100vh;
+ }
+
+
+ .footer {
+     margin-top: 20px;
+     /* Ajusta el valor para el espacio deseado */
+     background-color: #222;
+     /* Color de fondo negro oscuro */
+     color: white;
+     /* Color del texto blanco */
+     padding: 10px;
+     /* Espaciado interno */
+     text-align: center;
+     /* Centrar el texto */
+     position: fixed;
+     /* Fijar el footer al fondo */
+     bottom: 0;
+     /* Posición inferior */
+     width: 100%;
+     /* Ancho completo */
+ }

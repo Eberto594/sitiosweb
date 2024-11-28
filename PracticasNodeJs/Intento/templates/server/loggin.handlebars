@@ -1,0 +1,31 @@
+<main>
+    {{#if failed }}
+    <h4 class="bg-danger text-white p-2 text-center rounded">
+        Autenticación fallida, revisa tu usuario o contraseña.
+    </h4>
+    {{/if}}
+    <div class="container vh-100 d-flex justify-content-center align-items-center">
+        <div class="w-50 shadow-lg p-4 rounded" style="background-color: #f9f9f9;">
+            <form method="post" class="mb-3">
+                <div class="mb-3">
+                    <input type="text" placeholder="Usuario" name="username" class="form-control form-control-lg"
+                        value="{{username}}" />
+                </div>
+                <div class="mb-3">
+                    <input type="password" placeholder="Contraseña" name="password" class="form-control form-control-lg"
+                        value="{{password}}" />
+                </div>
+                <button type="submit" class="btn btn-primary w-100"
+                    style="background-color: #1167b1; border-color: #1167b1;">
+                    Iniciar sesión
+                </button>
+            </form>
+            <form action="/saveUser">
+                <button type="submit" class="btn btn-secondary w-100"
+                    style="background-color: #2a9df4; border-color: #2a9df4;">
+                    Registrarse
+                </button>
+            </form>
+        </div>
+    </div>
+</main>

@@ -1,0 +1,23 @@
+
+<head>
+    <script src="/bundle.js"></script>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+</head>
+{{!-- <h4>
+    {{user}}
+</h4> --}}
+
+<div class="bg-primary text-white p-1 clearfix">
+    <form method="post" action="/signout">
+        <span class="h5">Usuario: {{user}}</span>
+        <button class="btn btn-secondary btn-sm float-end" type="submit">Cerrar Sesion</button>
+    </form>
+    {{!-- <button class="btn btn-primary btn-sm" formmethod="post" formaction="/form/delete/{{this.id}}">Delete</button> --}}
+    {{!-- <button class="btn btn-primary btn-sm" formmethod="post" formaction="/signout">Cerrar Sesiso</button> --}}
+        <a href="/changePass" class="btn btn-secondary btn-sm float-end">Cambiar contraseña</a>&nbsp;&nbsp;
+<a href="/profile" class="btn btn-secondary btn-sm float-end">Mi perfil</a>&nbsp;&nbsp;
+</div>
+
+<div>
+    {{!-- {{data.username}} --}}
+</div>
